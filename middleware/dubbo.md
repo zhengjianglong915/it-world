@@ -10,7 +10,7 @@
 ### 2. [肥朝--dubbo源码解析系列](https://www.jianshu.com/nb/6137390) 
 比较适合源码跟读，将阅读过程一步步截图出来了，没谁了。
 
- - 1. Dubbo的spi
+ - Dubbo的spi
     - 1.1 [dubbo源码解析-spi(一)](https://www.jianshu.com/p/99f568df0f05)  
 
 

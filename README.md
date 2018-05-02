@@ -3,6 +3,9 @@
 
 
 ## 目录
+
+- 语言
+  - [Java知识地图](language/java.md) 
 - 中间件
-  - [Dubbo知识地图](/middleware/dubbo.md)
+  - [Dubbo知识地图](middleware/dubbo.md)
 
