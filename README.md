@@ -8,4 +8,5 @@
   - [Java知识地图](language/java.md) 
 - 中间件
   - [Dubbo知识地图](middleware/dubbo.md)
+  - [Kafka知识地图](middleware/kafka.md)
 
