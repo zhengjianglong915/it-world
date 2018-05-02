@@ -4,5 +4,5 @@
 
 ## 目录
 - 中间件
-  - [Dubbo知识地图] (/中间件/dubbo.md)
+  - [Dubbo知识地图](/middleware/dubbo.md)
 
