@@ -2,6 +2,10 @@
 ## 基础
 
 ## 进阶
+
+ - Java序列化
+   - [深入学习 Java 序列化](http://www.importnew.com/24490.html) 
+    
  - JAVA SPI
     - [java中的SPI机制](https://blog.csdn.net/sigangjun/article/details/79071850) | CSDN 
     - [Dubbo原理解析-Dubbo内核实现之SPI简单介绍](https://blog.csdn.net/quhongwei_zhanqiu/article/details/41577159) | CSDN

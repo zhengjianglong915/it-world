@@ -27,6 +27,25 @@
     - 4 [dubbo源码解析-spi(四)](https://www.jianshu.com/p/dba4447e5dc5) | 结合spring AOP，讲解dubbo spi的aop设计
     - 5 [dubbo源码解析-spi(五)](https://www.jianshu.com/p/27dc92362de4) | 模仿dubbo spi 自己手动写一个spi
 
+### 3. RPC的三大核心元素
+- dubbo 线程模型
+    - [Dubbo源代码实现六：线程池模型与提供者](https://blog.csdn.net/manzhizhen/article/details/73436619)  
+    - [Dubbo源代码分析九：优雅停机](https://blog.csdn.net/manzhizhen/article/details/78756370)
+    - [dubbo请求处理线程模型实现分析](https://cloud.tencent.com/developer/article/1109467) | 腾讯云 | 分析了线程模型的装饰者设计模式
+    - [第十章 dubbo线程模型](https://www.cnblogs.com/java-zhao/p/7822766.html)
+    - [dubbo底层RPC通讯Netty线程模型源码分析--视频](https://www.bilibili.com/video/av20698482/)
+    
+- Dubbo编码协议
+    - [Dubbo编码解码](https://www.jianshu.com/p/608195a1767a) 
+    - [在Dubbo中使用高效的Java序列化（Kryo和FST）](https://dangdangdotcom.github.io/dubbox/serialization.html)  
+
+- 通讯协议
+    - [精通Dubbo——Dubbo支持的协议的详解](https://blog.csdn.net/fuyuwei2015/article/details/72848310)
+    
+
+### 其他
+- [dubbo源码解析系列--博客园](http://www.cnblogs.com/java-zhao/category/1090034.html)
+
 
  
 ## 三.思考(面试题)
