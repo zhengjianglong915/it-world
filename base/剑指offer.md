@@ -426,13 +426,188 @@ public class Solution {
 很明显，这是一个递归的过程。
 
 ### 17.3 算法实现
+```
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+    public TreeNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+    public boolean HasSubtree(TreeNode root,TreeNode subRoot) {
+         if (root == null || subRoot == null) {
+             return false;
+         }
+        
+         boolean flag = false; // 关键，因为不是二叉搜索树，树中数据无规律，可能存在其左右孩子节点中
+        if (root.val == subRoot.val) {
+            flag = isSubTree(root, subRoot);
+        }
+        if (!flag) {
+            flag = HasSubtree(root.left, subRoot);
+        } 
+        if (!flag) {
+            flag = HasSubtree(root.right, subRoot);
+        }
+        return flag;
+    }
+    
+    private boolean isSubTree(TreeNode root, TreeNode subRoot) {
+        if (subRoot == null) {
+            return true;
+        }
+        if (root == null) {
+            return false;
+        }
+        
+        if (root.val != subRoot.val) {
+            return false;
+        }
+        return isSubTree(root.left, subRoot.left) && isSubTree(root.right, subRoot.right);
+    }
+}
+```
+
+## 18. 二叉树的镜像
+### 18.1 算法描述
+操作给定的二叉树，将其变换为源二叉树的镜像。
+ <img src="media/15255009045585.jpg" width="400px">
+ 
+ - [牛客网](https://www.nowcoder.com/practice/564f4c26aa584921bc75623e48ca3011?tpId=13&tqId=11171&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+ - [Edison Zhou](http://www.cnblogs.com/edisonchou/p/4774626.html)   
+ 
+### 18.2 算法思路	  
+
+- Step1.**先序遍历**原二叉树的每个节点，如果遍历到的结点有子结点，就交换它的两个子结点。或者按照**后序遍历**原二叉树的每个节点，先对它的每个结点做镜像变化，然后交互它的两个子结点。
+- Step2.递归遍历每个节点的子节点，同样，如果遍历到的子节点有子节点，就交换它的两个子节点。
+
+当交换完所有非叶子结点的左右子结点之后，就得到了树的镜像。下图展示了求二叉树的镜像的过程：
+
+<img src="media/15255010296856.jpg" width="600px">
+
+### 18.3 算法实现
+```
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+}
+*/
+public class Solution {
+    public void Mirror(TreeNode root) {
+        if (root == null) return;
+        
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        
+        Mirror(root.left);
+        Mirror(root.right);
+    }
+}
+```
+
+## 19. 顺时针打印矩阵---看书
+### 19.1 算法描述
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
 
 
+### 19.2 算法思想
 
+### 19.3 算法实现
+```
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+       ArrayList<Integer> result = new ArrayList<Integer>();
+       if (null == matrix || matrix.length == 0 || matrix[0].length == 0) {
+           return result;
+       }
+        int row = 0, col = 0;
+        int min = Math.min(matrix.length, matrix[0].length);
+        for (int level = 0; 2 * level < min; level ++) {
+            int rowEnd = matrix.length - 1 - level;
+            int colEnd = matrix[0].length - 1- level;
+            // 上行
+            for (int i = level; i <= colEnd; i++) {
+                result.add(matrix[level][i]);
+            }
+            
+            // 右列
+            if (level < rowEnd) {
+                for (int i = level + 1; i <= rowEnd; i++) {
+                    result.add(matrix[i][colEnd]);
+                }
+            }
+            
+            // 下行
+            if (level < rowEnd && level < colEnd) {
+                for (int i = colEnd - 1; i >= level; i--) {
+                    result.add(matrix[rowEnd][i]);
+                }
+            }
+            
+            // 左列
+            if (level + 1 < rowEnd && level < colEnd) {
+                 for (int i = rowEnd - 1; i > level; i--) {
+                    result.add(matrix[i][level]);
+                }
+            }
+        }
+       return result;
+    }
+}
+```
 
+## 20. 包含min函数的栈
+### 20.1 算法描述
+定义栈的数据结构，请在该类型中实现一个能够得到栈最小元素的min函数。
 
+### 20.2 算法思路
+用一个辅助栈，栈顶元素记录当前压如栈的最小元素。 每次入栈的时候都需要将最小值压入辅助栈。只需要判断当前值和辅助栈的栈顶元素，如果小于辅助栈顶元素，则将当前元素压入辅助栈中；否则用压入一个一样的栈顶元素。下图展示了栈内压入3、4、2、1之后接连两次弹出栈顶数字再压入0时，数据栈、辅助栈和最小值的状态。
 
+<img src="media/15255022766954.jpg" width="600px">
 
+### 20.3 算法实现
+```
+import java.util.Stack;
+public class Solution {
+    Stack<Integer> stack = new Stack<Integer>();
+    Stack<Integer> minStack = new Stack<Integer>();
+    public void push(int node) {
+        stack.push(node);
+        if (minStack.isEmpty()) {
+            minStack.push(node);
+        } else if (node < min()) {
+            minStack.push(node);
+        } else {
+            minStack.push(min());
+        }
+    }
+    
+    public void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int min() {
+        return minStack.peek(); // 查看
+    }
+}
+```
 
 
 
