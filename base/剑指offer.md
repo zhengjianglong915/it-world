@@ -246,9 +246,12 @@ public class Solution {
 ## 14. 链表中倒数第k个结点
 ### 14.1 算法描述
 输入一个链表，输出该链表中倒数第k个结点。
-[链表中倒数第k个结点](https://www.nowcoder.com/practice/529d3ae5a407492994ad2a246518148a?tpId=13&tqId=11167&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
 
 <img src="media/15254977040155.jpg" width="400px">
+
+[牛客网](https://www.nowcoder.com/practice/529d3ae5a407492994ad2a246518148a?tpId=13&tqId=11167&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+
 
 
 ### 14.2 算法思路
@@ -315,10 +318,10 @@ public class Solution {
 ### 15.1 算法描述
 输入一个链表，反转链表后，输出链表的所有元素。
 
-[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4769537.html)
-[牛客网](https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca?tpId=13&tqId=11168&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
-
 <img src="media/15254987756814.jpg" width="500px">
+
+- [Edison Zhou](http://www.cnblogs.com/edisonchou/p/4769537.html)
+- [牛客网](https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca?tpId=13&tqId=11168&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
 
 ### 15.2 算法思路
 采用头插入法， 定义3个指针，分别指向当前遍历到的结点cur、后一个结点next、nHead新链表的头结点。
@@ -364,8 +367,8 @@ public class Solution {
 
 <img src="media/15254993887024.jpg" width="500px">
 
-[牛客网](https://www.nowcoder.com/practice/d8b6b4358f774294a89de2a6ac4d9337?tpId=13&tqId=11169&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
-[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771515.html)
+- [牛客网](https://www.nowcoder.com/practice/d8b6b4358f774294a89de2a6ac4d9337?tpId=13&tqId=11169&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+- [Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771515.html)
 
 ### 16.2 算法思路
 Step1.定义一个指向新链表的指针，暂且让它指向NULL；
@@ -411,8 +414,8 @@ public class Solution {
 
 <img src="media/15254998598768.jpg" width="400px">
 
-[牛客网](https://www.nowcoder.com/practice/6e196c44c7004d15b1610b9afca8bd88?tpId=13&tqId=11170&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
-[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771939.html)
+- [牛客网](https://www.nowcoder.com/practice/6e196c44c7004d15b1610b9afca8bd88?tpId=13&tqId=11170&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+- [Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771939.html)
 
 ### 17.2 算法思想
 要查找树A中是否存在和树B结构一样的子树，我们可以分成两步：
