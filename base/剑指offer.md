@@ -6,11 +6,11 @@ n<=39
 
 [newCode](https://www.nowcoder.com/practice/c6c7742f5ba7442aada113136ddea0c3?tpId=13&tqId=11160&tPage=1&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
 
-### 算法思路
+### 7.2 算法思路
 用两个指针，一个记录倒数第一个，一个记录倒数第二个。
 用这两个指针计算新的值，并重新更新这两个指针。复杂度 O(N)
 
-### 算法实现
+### 7.3 算法实现
 ```
 public class Solution {
     public int Fibonacci(int n) {
@@ -113,6 +113,325 @@ public class Solution {
 }
 ```
 
-## 11. 
+## 11. 二进制中1的个数---再看下书
+### 11.1 算法描述
+输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
+
+[牛客网](https://www.nowcoder.com/practice/8ee967e43c2c4ec193b040ea7fbb10b8?tpId=13&tqId=11164&tPage=1&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+### 11.2 算法思路
+O(logM) 时间复杂度解法，其中M表示1的个数。
+
+
+```
+假如 n = 5
+    n          0101   5 
+    n - 1      0100   4
+    n=n&(n-1)  0100   4
+    n - 1      0011   3
+    n=n&(n-1)  0000   0
+    进行了两次&运算，得到二进制5中的1的个数2
+```
+    
+### 11.3 算法实现
+```
+public class Solution {
+    public int NumberOf1(int n) {
+        int count = 0;
+        while (n != 0 ) { // 注意，是不等于0
+            count ++;
+            n = n & (n -1);
+        }
+        return count;
+    }
+}
+```
+
+## 12. 数值的整数次方
+### 12.1 算法描述
+给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+
+[牛客网](https://www.nowcoder.com/practice/1a834e5e3e1a4b7ba251417554e07c00?tpId=13&tqId=11165&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+### 12.2 算法思路
+需要考虑的点：
+
+ 1. exponent的负数问题
+ 2. exponent为负数时，base不能为0
+
+思路：将exponent转为正数，按整数方式处理，然后再求倒数。
+
+### 12.3 算法实现
+```
+import java.lang.IllegalArgumentException;
+
+public class Solution {
+    public double Power(double base, int exponent) {
+        if (base == 0 && exponent < 0) {
+            throw new IllegalArgumentException("参数非法");
+        }
+        boolean flag = false;
+        if (exponent < 0 ) {
+            flag = true;
+        }
+        
+        double result = doPower(base, exponent);
+        if (flag) {
+            return  1.0 / result;
+        } else {
+            return result;
+        }
+        
+   }
+    
+    private double doPower(double base, int exp) {
+        if (exp == 0)
+            return 1;
+        
+        if (exp%2 == 0) {
+            double r1 = doPower(base, exp/2);
+            return r1 * r1;
+        } else {
+             double r1 = doPower(base, exp/2);
+             return r1 * r1 * base;
+        }
+    }
+}
+```
+
+## 13. 调整数组顺序使奇数位于偶数前面
+### 13.1 算法描述
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+
+[牛客网](https://www.nowcoder.com/practice/beb5aa231adc45b2a5dcc5b62c93f593?tpId=13&tqId=11166&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+### 13.2 算法思想
+如果要保证奇数和奇数，偶数和偶数之间的相对位置不变，那么需要开辟新的空间来保存奇数和偶数，方法有两种：
+
+ 1. 开辟一个新数组，遍历第一遍原数组，将奇数依次写入新数组，遍历第二遍原数组，将偶数依次写入新数组，返回新数组；
+
+ 2. 开辟两个数组，遍历一遍原数组，分别将奇数和偶数存入两个新数组，再将奇数数组和偶数数组分别写入原数组，返回原数组；
+
+如果无需保证奇数和奇数，偶数和偶数之间的相对位置不变，那么可以通过前后遍历，奇偶对换的方法来实现：
+
+维护两个指针，分别指向数组的首尾，然后一个向后一个向前，在两个指针相遇之前，如果第一个指针指向偶数，而第二个指针指向奇数，那么就交换这两个数。（无需开辟新空间）
+
+**类似题目**：
+
+ - 将题目改成将数组分成两部分，所有负数在非负数前面；
+ - 将题目改成将数组分成两部分，能被3整除的在不能被3整除的前面；
+
+### 13.3 算法实现
+```
+public class Solution {
+    public void reOrderArray(int [] array) {
+        if (array == null || array.length == 0) {
+            return;
+        }
+        int[] newArray = new int[array.length];
+        int idx = 0, nIdx = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 == 0) {
+                newArray[nIdx++] =  array[i];
+            } else {
+                array[idx++] = array[i];
+            }
+        }
+        
+        for (int i = 0; i < nIdx; i++) {
+            array[idx++] = newArray[i];
+        }
+    }
+}
+```
+
+## 14. 链表中倒数第k个结点
+### 14.1 算法描述
+输入一个链表，输出该链表中倒数第k个结点。
+[链表中倒数第k个结点](https://www.nowcoder.com/practice/529d3ae5a407492994ad2a246518148a?tpId=13&tqId=11167&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+<img src="media/15254977040155.jpg" width="400px">
+
+
+### 14.2 算法思路
+参考： https://www.cnblogs.com/edisonchou/p/4769164.html
+为了能够只遍历一次就能找到倒数第k个节点，可以定义两个指针：
+
+  - 第一个指针从链表的头指针开始遍历向前走k-1，第二个指针保持不动；
+  - 从第k步开始，第二个指针也开始从链表的头指针开始遍历；
+  - 由于两个指针的距离保持在k-1，当第一个（走在前面的）指针到达链表的尾结点时，第二个指针（走在后面的）指针正好是倒数第k个结点。
+
+　　下图展示了在有6个结点的链表上找倒数第3个结点的过程：
+　　
+　　<img src="media/15254979341852.jpg" width="500px">
+
+
+**注意点**：
+
+ - 可能链长度小于k， 返回null
+ - 链为空判断
+ - k <= 0 判断。 如果是返回null
+
+ **举一反三**：当我们用一个指针遍历链表不能解决问题的时候，可以尝试用两个指针来遍历链表。可以让其中一个指针遍历的速度快一些（比如一次在链表上走两步），或者让它先在链表上走若干步。
+
+### 14.3 算法实现
+```
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+     public ListNode FindKthToTail(ListNode head, int k) {
+        if (k <= 0 || head == null) {
+            return null;
+        }
+             
+        // 先走k-1步
+        int count = 1;
+        ListNode quick = head;
+        while(quick.next != null && count < k) {
+            quick = quick.next;
+            count ++;
+        }
+        if (count < k) {
+            return null;
+        }
+         
+        // 两指针一起移动 
+        ListNode slow = head;
+        while(quick.next != null ) {
+            quick = quick.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+```
+
+## 15. 反转链表
+### 15.1 算法描述
+输入一个链表，反转链表后，输出链表的所有元素。
+
+[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4769537.html)
+[牛客网](https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca?tpId=13&tqId=11168&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+<img src="media/15254987756814.jpg" width="500px">
+
+### 15.2 算法思路
+采用头插入法， 定义3个指针，分别指向当前遍历到的结点cur、后一个结点next、nHead新链表的头结点。
+ 
+ 1. 用next记录cur的后一个节点，用于后面遍历。
+ 2. 插入到新表的头部：将cur.next = nHead；  nHead = cur
+ 4. 继续处理后续节点：cur = next；
+ 
+### 15.3 算法实现
+```
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        if (head == null) return null;
+        
+        ListNode cur = head;
+        ListNode next = cur.next;
+        head.next = null;
+        ListNode nHead = head;
+        
+        while(next != null) {
+            cur = next;
+            next = cur.next;
+            cur.next = nHead;
+            nHead = cur;
+        }
+       return nHead;     
+    }
+}
+```
+
+## 16. 合并两个排序的链表
+### 16.1 算法描述
+输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+
+<img src="media/15254993887024.jpg" width="500px">
+
+[牛客网](https://www.nowcoder.com/practice/d8b6b4358f774294a89de2a6ac4d9337?tpId=13&tqId=11169&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771515.html)
+
+### 16.2 算法思路
+Step1.定义一个指向新链表的指针，暂且让它指向NULL；
+
+Step2.比较两个链表的头结点，让较小的头结点作为新链表的头结点；
+
+Step3.递归比较两个链表的其余节点，让较小的节点作为上一个新节点的后一个节点；
+
+### 16.3 算法实现
+```
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode Merge(ListNode list1, ListNode list2) {
+        if (list1 == null) 
+            return list2;
+        if (list2 == null)
+            return list1;
+       
+        ListNode head;
+        if (list1.val < list2.val) {
+            head = list1;
+            head.next = Merge(list1.next, list2);
+        } else {
+            head = list2;
+            head.next = Merge(list1, list2.next);
+        }
+        return head;
+    }
+}
+```
+
+## 17. 树的子结构
+### 17.1 算法描述
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+
+<img src="media/15254998598768.jpg" width="400px">
+
+[牛客网](https://www.nowcoder.com/practice/6e196c44c7004d15b1610b9afca8bd88?tpId=13&tqId=11170&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+[Edison Zhou](http://www.cnblogs.com/edisonchou/p/4771939.html)
+
+### 17.2 算法思想
+要查找树A中是否存在和树B结构一样的子树，我们可以分成两步：
+
+ - Step1.在树A中找到和B的根结点的值一样的结点R；
+ - Step2.判断树A中以R为根结点的子树是不是包含和树B一样的结构。
+
+很明显，这是一个递归的过程。
+
+### 17.3 算法实现
+
+
+
+
+
+
+
+
+
+
 
 
