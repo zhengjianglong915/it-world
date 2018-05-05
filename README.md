@@ -3,7 +3,10 @@
 
 
 ## 目录
-
+- 基础
+   - 计算机操作系统
+     - [计算机操作系统--笔记](https://github.com/CyC2018/Interview-Notebook/blob/master/notes/计算机操作系统.md) 
+     - [计算机操作系统之IO管理](https://blog.csdn.net/shentanweilan9/article/details/54017502)  
 - 语言
   - [Java知识地图](language/java.md) 
 - 中间件
