@@ -1,4 +1,262 @@
 # 剑指offer
+* [1. 二维数组中的查找](#1-二维数组中的查找)
+* [2. 替换空格](#1-二维数组中的查找)
+
+## 1. 二维数组中的查找
+### 1.1 算法描述
+[牛客网地址](https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e?tpId=13&tqId=11154&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+### 1.2 解决思路
+如果采用二分查找法，将原问题分解为多个区域。导致的问题是查找的数值可能会在多个区域出现，增加了查找复杂度。
+
+因为已经是一个有序的数组了，可以选择右上角的数值(在当前行是最大，在当前列是最小)，通过移动这个左边使得查找数值在一个确定的区间内。
+
+ - 如果相等直接返回
+ - 如果小于查找值，增加行号，往下移动。(原来那一行肯定不存在小于查找值的数值)
+ - 如果大于查找值，减少列号，向左移动。（右边得值都大于查找值，故不存在）
+
+### 1.3 算法实现
+```
+public class Solution {
+    public boolean Find(int target, int [][] array) {
+        if (array == null || array.length == 0 || array[0].length == 0)  {
+            return false;
+        }
+        
+        int row = 0, col = array[0].length - 1;
+        while (row < array.length && col >= 0) {
+            if (array[row][col] == target) {
+                return true;
+            } else if (array[row][col] < target) {
+                row ++;
+            } else {
+                col --;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## 2. 替换空格
+### 2.1 算法描述
+[牛客网地址](https://www.nowcoder.com/practice/4060ac7e3e404ad1a894ef3e17650423?tpId=13&tqId=11155&tPage=1&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+
+### 2.2 算法思路
+1. 首先计算原数组中需要替换的内容数量，并得出新字符串长度。
+2. 从头遍历原字符串，将其copy到新字符串中。如果遇到空格则用“%20”替换。
+3. 返回新字符串
+
+### 2.3 算法实现
+```
+public class Solution {
+    public String replaceSpace(StringBuffer str) {
+        // 第一件重要的事
+        if( str == null || str.length() == 0)
+            return str.toString();
+        // 长度计算
+        int newlength = newLength(str);
+        char[] newChar = new char[newlength];
+        int idx = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ' ') {
+                newChar[idx++] = '%';
+                newChar[idx++] = '2';
+                newChar[idx++] = '0';
+            } else {
+                newChar[idx++] = str.charAt(i);
+            }
+        }
+        return new String(newChar);
+    }
+    private int newLength(StringBuffer str) {
+        int spaceNum = 0;
+        for (int i = 0; i < str.length(); i ++) {
+            if (str.charAt(i) == ' ') {
+                spaceNum++;
+            }
+        }    
+        return str.length()  + spaceNum * 2;
+    } 
+}
+```
+
+## 3. 从尾到头打印链表
+### 3.1 算法描述
+[牛客网](https://www.nowcoder.com/practice/d0267f7f55b3412ba93bd35cfa8e8035?tpId=13&tqId=11156&tPage=1&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+输入一个链表，从尾到头打印链表每个节点的值。
+
+### 3.2 算法思路
+需要借助栈，栈是后进先出。先将内容存入栈中，然后一个个弹出，这样就形成从尾部到头遍历。
+
+### 3.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class Solution {
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        ListNode node = listNode;
+        Stack<Integer> stack = new Stack<Integer>();
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        while (null != node) {
+            stack.push(node.val);
+            node = node.next;
+        }
+        
+        while(!stack.isEmpty()) {
+            result.add(stack.pop());
+        }
+        return result;
+    }
+}
+```
+
+## 4. 重建二叉树
+### 4.1 算法描述
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+
+
+### 4.2 算法思路
+前序遍历的是先出现根、然后左节点和右节点。中序遍历是先遍历左节点、再遍历根节点和右节点。 根据前序遍历的根节点就可以到中序遍历中确定左孩子树和右孩子树。左孩子和右孩子也按照相同的方式进行。
+
+### 4.3 算法实现
+```
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        if (pre.length != in.length || pre.length == 0) {
+            return null;
+        }
+        return build(pre, 0, pre.length - 1, in, 0, in.length -1);
+    }
+     
+    private TreeNode build(int[] pre, int preStart, int preEnd, int[] in, int inStart, int inEnd) {
+        // 保证长度相等，没有越界
+        if (preEnd - preStart != inEnd - inStart || preStart > preEnd || inStart > inEnd ) {
+            return null;
+        }
+        int root =  pre[preStart];    
+        int idx = inStart;
+        while ( idx <= inEnd && in[idx] != root) idx ++;
+        if (idx > inEnd) {
+            return null;
+        }
+        
+        TreeNode treeNode = new TreeNode(root);
+        int length = idx - inStart;
+        if (length > 0)
+            treeNode.left = build(pre, preStart + 1, preStart + length, in, inStart, idx -1);
+         if (inEnd - idx > 0 )
+            treeNode.right = build(pre, preStart + length + 1, preEnd, in, idx + 1, inEnd);
+        return treeNode;
+    }   
+}
+
+```
+
+## 5. 用两个栈实现队列
+### 5.1 算法描述
+用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
+
+### 5.2 算法思路
+1. 一个栈stack1专门负责push.
+2. 另外stack2，存放从stack1 pop后的数值。因此stack2的pop操作维护了整体的先进先出顺序，因此队列的pop从stack2中弹出：
+
+  - 每次pop的时候先判断stack2是否有值，有值则弹出。
+  - 如果没有值，则从stack1中将当前的所有值弹出并压到stack2中。这样变成了一个逆序了。
+
+### 5.3 算法实现 
+```
+import java.util.Stack;
+
+public class Solution {
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+    
+    public void push(int node) {
+        stack1.push(node);
+    }
+    
+    public int pop() {
+        if (!stack2.isEmpty()) {
+            return stack2.pop();
+        } else {
+            while(!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+            return stack2.pop();
+        }
+    }
+}
+```
+
+## 6. 旋转数组的最小数字
+### 6.1 算法描述
+[牛客网](https://www.nowcoder.com/practice/9f3231a991af4f55b95579b44b7a01ba?tpId=13&tqId=11159&tPage=1&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+
+### 6.2 算法描述
+整个数组基本有序，因此可以采用二分查找方式查找。 存在以下几种情况：
+
+  - 如果mid的值大于左边的值，那么left=mid
+  - 如果mid小于右边的值，那么right=mid
+  - 如果mid=left=right，那么遍历查找
+  - 如果查找范围只有两个数时，返回其中小的一个
+
+### 6.3 算法实现
+```
+import java.util.ArrayList;
+public class Solution {
+    public int minNumberInRotateArray(int [] array) {
+        if (null == array || array.length == 0) {
+            return 0;
+        }
+       
+        int left = 0, right = array.length - 1;
+        while (left < right) {
+            if (right - left == 1) {
+                  if (array[left] < array[right]) {
+                    return array[left];
+                } else {
+                    return array[right];
+                }
+            } 
+            
+            int mid = (left + right) >> 1;
+            if (array[mid] == array[left] && array[mid] == array[right]) {
+                int min = array[left];
+                for (int i = left; i <= right; i++ ) {
+                    if (array[i] < min) {
+                        min = array[i];
+                    }
+                }
+                return min;
+            }else if (array[mid] >= array[left]) { // 这个等号很关键
+                left = mid;
+            } else {
+                right = mid;
+            } 
+        }
+        return array[left];
+    }
+}
+```
+
 ## 7. 斐波那契数列
 ### 7.1 算法描述
 大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。
@@ -608,6 +866,11 @@ public class Solution {
     }
 }
 ```
+
+
+
+
+
 
 
 
