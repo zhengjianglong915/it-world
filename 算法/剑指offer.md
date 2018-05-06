@@ -869,6 +869,316 @@ public class Solution {
 ```
 
 
+## 21. 栈的压入、弹出序列
+### 21.1 算法描述
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+
+[牛客网](https://www.nowcoder.com/practice/d77d11405cc7470d82554cb392585106?tpId=13&tqId=11174&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+### 21.2 算法思路
+利用一个栈，模拟栈的压入和弹出操作：
+
+ 1. 遍历压入序列，每次向栈中压入一个元素。
+ 2. 每次压入元素后，判断栈顶元素和弹出序列指向的元素是否一致，是则弹出，并指向下一个弹出序列元素。直到栈为空或两元素不一样。
+ 3. 循环以上过程，直到所有的元素完成入栈操作
+ 4. 最后判断栈内元素是否为空，如果是则返回true
+ 
+### 21.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Stack;
+ 
+public class Solution {
+    public boolean IsPopOrder(int [] pushA,int [] popA) {
+          if (null == pushA && null ==  popA) {
+              return true;
+          } else if (null == pushA || null == popA) {
+              return false;
+          } else if (pushA.length != popA.length) {
+              return false;
+          }
+         Stack<Integer> stack = new Stack<Integer>();
+          int idx = 0;
+          for (int a: pushA) {
+              stack.push(a);
+              while(!stack.isEmpty() && stack.peek() == popA[idx]) { // 需要判断非空
+                  stack.pop();
+                  idx++;
+              }
+          }
+        return stack.isEmpty();
+    }
+}
+```
+
+## 22. 从上往下打印二叉树
+### 22.1 算法描述
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+
+### 22.2 算法思路
+属于典型的树层次遍历。 需要引入队列：
+
+ 1. 首先将根节点存入队列中
+ 2. 从队列中取出树节点，并遍历。
+ 3. 如果树节点存在左孩子，则存入队列中；
+ 4. 如果存在右孩子节点，存入队列中。
+ 5. 循环以上步骤，直到队列元素都遍历完成。
+
+### 22.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
+
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<TreeNode>(); // LinkedList
+        queue.offer(root); // offer
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.poll(); // 是poll 不是take/pop
+            result.add(node.val);
+            if (node.left != null)
+                queue.offer(node.left);
+            if (node.right != null) 
+                 queue.offer(node.right);
+        }
+        return result;
+    }
+}
+```
+
+## 23. 二叉搜索树的后序遍历序列
+### 23.1 算法描述
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+
+### 23.2 算法思路
+二叉搜索树后序遍历的特点是 先做孩子、右孩子再根节点。并且左孩子小于根节点、右孩子大于根节点。 
+
+ - 先序列的最后一个节点作为根节点，然后从头遍历，直到第一个大于根节点的值作为右结点起始位置。
+ - 遍历右节点的所有元素是否都大于根节点，如果不是则返回false, 否则对左右节点继续按照这个方式进行判断。
+
+### 23.3 算法实现
+```
+public class Solution {
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        if (sequence == null || sequence.length == 0) {
+            return false;
+        }
+        return isSquenceOfBST(sequence, 0, sequence.length - 1);
+    }
+    
+    private boolean isSquenceOfBST(int[] seq, int start, int end) {
+        if (end <= start ) {
+            return true;
+        }
+        
+        int root = seq[end];
+        int rightIdx = start;
+        for (rightIdx = start; rightIdx < end; rightIdx ++) {
+            if (seq[rightIdx] > root) break;
+        }
+        
+        // 检查
+        for (int i = rightIdx; i < end; i++) {
+            if(seq[i] < root) {
+                return false;
+            }
+        }
+        boolean left = isSquenceOfBST(seq, start, rightIdx -1);
+        boolean right = isSquenceOfBST(seq, rightIdx + 1, end -1);
+        return  left && right; 
+    }
+}
+```
+
+## 24. 二叉树中和为某一值的路径
+### 24.1 算法描述
+输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+
+[牛客网](https://www.nowcoder.com/practice/b736e784e3e34731af99065031301bca?tpId=13&tqId=11177&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 24.2 算法思路
+用一个栈存储当前遍历的路径，用sum变量记录当前的路径之和。
+
+ 1. 遍历节点时，先入栈。 并将sum加上当前节点的值
+ 2. 如果sum加上当前节点的值等于指定整数，则将栈中的数值打印，并离开。否则对左右节点按相同逻辑处理。
+ 3. 离开节点时，出栈。sum减去节点值。
+
+注意：路径之和必须是到叶子节点。如果是内部节点之和已经到target, 则不能记录进去。
+
+### 24.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Stack;
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+         ArrayList<ArrayList<Integer>> result = new  ArrayList<ArrayList<Integer>> ();
+        if (root == null) {
+            return result;
+        }
+        Stack<Integer> stack = new Stack<Integer>();
+        findPath(root, 0, target, stack, result);
+        return result;
+    }
+    
+    private void findPath(TreeNode root, int sum, int target, Stack<Integer> stack, 
+                          ArrayList<ArrayList<Integer>> result) {
+        if (root == null) {
+            return;
+        }
+        stack.push(root.val);
+        sum += root.val;
+        if (sum == target && root.left == null && root.right == null) { 
+            // 必须加上root.left == null && root.right == null
+            ArrayList<Integer> path = new ArrayList<Integer>();
+            for (Integer val : stack) {
+                path.add(val);
+            }
+            result.add(path);
+        } else {
+            findPath(root.left, sum, target, stack, result);
+              findPath(root.right, sum, target, stack, result);
+        }
+        stack.pop();
+        sum -= root.val;
+    }
+}
+```
+
+## 25. 复杂链表的复制
+### 25.1 算法描述
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+
+[牛客网](https://www.nowcoder.com/practice/f836b2c43afc4b35ad6adc41ec941dba?tpId=13&tqId=11178&rp=1&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+复制前：
+
+<img src="media/15255998557864.jpg" width="300px">
+
+复制后：
+<img src="media/15255998945221.jpg" width="600px">
+
+
+
+
+### 25.2 算法思路
+1. 遍历一遍原始链表，复制结点N对应的N’，将其插入到结点N的后面，如下图所示
+
+<img src="media/15256000230378.jpg" width="600px">
+
+2. 确定每个随机指针的指向，只需遍历一遍链表即可确定每个结点的随机指针的指向，得到如下图结构：
+
+<img src="media/15256000646695.jpg" width="600px">
+
+
+3. 再次遍历一遍，将原始链表和复制链表分开，奇数为原始链表，偶数为复制链表，得到如下图型
+<img src="media/15256001297977.jpg" width="600px">
+
+### 25.3 算法实现
+```
+/*
+public class RandomListNode {
+    int label;
+    RandomListNode next = null;
+    RandomListNode random = null;
+ 
+    RandomListNode(int label) {
+        this.label = label;
+    }
+}
+*/
+public class Solution {
+    public RandomListNode Clone(RandomListNode pHead)
+    {
+        if(null == pHead) {
+            return null;
+        }
+        cloneNodes(pHead);
+        connectRandom(pHead);
+        return reconnection(pHead);
+    }
+     
+    public void cloneNodes(RandomListNode pHead) {
+        RandomListNode node = pHead;
+        while(node != null) {
+            RandomListNode clone = new RandomListNode(node.label);
+            RandomListNode temp = node.next;
+            clone.next = temp;
+            node.next = clone;
+            node = temp;
+        }
+    }
+     
+    public void connectRandom(RandomListNode pHead) {
+        RandomListNode node = pHead;
+        while(null != node) {
+            RandomListNode clone = node.next;
+            if (node.random != null) {
+                clone.random = node.random.next;
+            }
+            node = clone.next;
+        }
+    }
+     
+    public RandomListNode reconnection(RandomListNode pHead) {
+        RandomListNode node = pHead;
+        RandomListNode cloneHead = pHead.next, cloneNode = pHead.next;
+        node.next = cloneNode.next;
+        node = node.next;
+        while(node != null) {
+            cloneNode.next = node.next;
+            cloneNode = cloneNode.next;
+            node.next = cloneNode.next;
+            node = cloneNode.next;
+        }
+        return cloneHead;
+    }
+}
+```
+
+## 26. 二叉搜索树与双向链表
+### 26.1 算法描述
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+<img src="media/15256010505990.jpg" width="600px">
+
+### 26.2 算法思路
+我们可以中序遍历树中的每一个结点，这是因为中序遍历算法的特点是按照从小到大的顺序遍历二叉树的每一个结点。
+
+当我们遍历转换到根结点（值为10的结点）时，它的左子树已经转换成一个排序的链表了，并且处在链表中的最后一个结点是当前值最大的结点。我们把值为8的结点和根结点链接起来，此时链表中的最后一个结点就是10了。接着我们去遍历转换右子树，并把根结点和右子树中最小的结点链接起来。
+
+
+<img src="media/15256011523009.jpg" width="400px">
+
 
 
 
