@@ -1346,6 +1346,107 @@ public class Solution {
 }
 ```
 
+## 29. 最小的K个数
+### 29.1 算法描述
+输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+
+[牛客网](https://www.nowcoder.com/practice/6a296eb82cf844ca8539b57c23e6e9bf?tpId=13&tqId=11182&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 29.2 算法思路
+1. 思路1：利用快排的思想，寻找第k个位置上正确的数，k位置前面的数即是比k位置小的数组，k后面的数即是比k位置元素大的数组。
+
+2. 思路2：利用堆排序，特别适用于海量数据中寻找最大或者最小的k个数字。即构建一个大堆容器，初始化大小为k，变量初始数，如初始数组大小小于等于k直接返回，如果大于k，则选择数组的前k个元素，填充堆，然后调整为最大堆。调整完之后，继续从初始数组中拿出一个元素，如果该元素比大堆的堆顶小，则替换堆顶，继续调整为最大堆，如果大于等于堆顶则直接丢弃，不作调整。
+
+### 29.3 算法实现
+#### 思路1实现
+```
+public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+   ArrayList<Integer> res = new ArrayList<Integer>();
+   if (input == null || input.length == 0 || input.length < k || k <= 0) {
+       return res;
+   }
+
+   int start  = 0;
+   int end = input.length-1;
+   int index = partition(input, start, end);
+   // 一直循环知道找到第k个位置正确的数。
+   while (index != k - 1) {
+       if (index > k - 1) {
+           end = index-1;
+           index = partition(input, start, end);
+       } else {
+           start = index+1;
+           index = partition(input, start, end);
+       }
+
+   }
+
+   for (int i = 0; i < k; i++) {
+       res.add(input[i]);
+   }
+
+   return res;
+}
+
+private int partition(int input[], int start, int end) {
+   int tmp = input[start];
+   while (start < end) {
+       while (start < end && input[end] >= tmp) {
+           end--;
+       }
+       input[start] = input[end];
+       while (start < end && tmp >= input[start]) {
+           start++;
+       }
+       input[end] = input[start];
+   }
+   input[start] = tmp;
+   return start;
+}
+```
+
+#### 思路2实现
+```
+import java.util.ArrayList;
+public class Solution {
+     public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(input == null || input.length == 0 || input.length < k || k <= 0)//k的范围要注意
+            return result;
+        int[] maxPQ = new int[k+1];
+        for(int i = 0; i < k ; i++)
+            maxPQ[i+1] = input[i];
+           
+        for(int i = k/2; i>=1; i--)
+            sink(maxPQ,k,i);
+          
+        for(int i=k;i<input.length;i++){
+            if(input[i] < maxPQ[1]){
+                maxPQ[1] = input[i];
+                sink(maxPQ,k,1);
+            }
+        }
+        for(int i=1;i<=k;i++)
+            result.add(maxPQ[i]);
+        return result;
+    }
+    private void sink(int[] maxPQ,int N,int k){
+        while(k*2 <= N){//这边是等号
+            int j = k*2;
+            if(j< N && maxPQ[j+1] > maxPQ[j]) j++;
+            if(maxPQ[j] < maxPQ[k]) break;
+            swap(maxPQ,k,j);
+            k = j;
+        }
+    }
+    private void swap(int[] array,int i,int j){
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+```
+
 
 
 
