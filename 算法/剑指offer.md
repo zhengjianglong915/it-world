@@ -1179,6 +1179,175 @@ public class Solution {
 
 <img src="media/15256011523009.jpg" width="400px">
 
+### 26.3 算法实现
+```
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+ 
+    public TreeNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        TreeNode lastNode = null;
+        lastNode = doConvert(pRootOfTree, lastNode);
+        while (lastNode != null && lastNode.left != null) {
+            lastNode = lastNode.left;
+        }
+        return lastNode;
+    }
+    // 返回lastNode
+    public TreeNode doConvert(TreeNode node, TreeNode lastNode) {
+        if (null == node) {
+            return null;
+        }
+        if (node.left != null) {
+            lastNode = doConvert(node.left, lastNode);
+        }
+        if (lastNode != null) {
+            lastNode.right = node;
+        }
+        node.left = lastNode;
+        lastNode = node;
+        if (node.right != null) {
+            lastNode = doConvert(node.right, lastNode);
+        }
+        return lastNode;
+    }
+}
+```
+
+## 27. 字符串的排列
+### 27.1 算法描述
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+
+[牛客网](https://www.nowcoder.com/practice/fe6b651b66ae47d7acce78ffdd9a96c7?tpId=13&tqId=11180&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+### 27.2 算法思想
+解题思路：本题求整个字符串的全排列可以看做两步：
+
+ 1. 首先求出所有可能出现在第一位置的字母，即begin与后面所有与它不同的字母进行交换
+ 2. 固定第一个字母，求后面字母的全排列，即递归此时begin = begin+1
+
+### 27.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Collections;
+ 
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+        ArrayList<String>  list = new ArrayList<String>();
+        if (null == str || str.length() == 0) {
+            return list;
+        }
+        doPermutation(str.toCharArray(), 0, list);
+        Collections.sort(list);
+        return list;  
+    }
+     
+    public void doPermutation(char[] str, int idx, ArrayList<String>  list) {
+        if (idx >= str.length - 1) {
+            list.add(new String(str));
+            return;
+        }
+        for (int i = idx; i < str.length; i++) {
+            if(i != idx && str[i] == str[idx] )
+                continue;
+            swap(str, i, idx);
+            doPermutation(str, idx+1, list);
+            swap(str, i, idx);
+        }
+    }
+    public void swap(char[] str, int i, int j) {
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+}
+```
+
+## 28. 数组中出现次数超过一半的数字
+### 28.1 算法描述
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+
+[牛客网](https://www.nowcoder.com/practice/e8a1b01a2df14cb2b228b30ee6a92163?tpId=13&tqId=11181&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 28.2 算法思路
+
+1. 采用快排，得到中间位置元素。 时间复杂度为 O(nlogN)
+2. 遍历数组，利用hashmap记录每个数字以及数字出现的次数。时间复杂度为O（n）
+3. 出现的次数超过数组长度的一半，表明这个数字出现的次数比其他数出现的次数的总和还多。我们在遍历的数组的时候可以用两个值来记录，一个用来记录可能为目标值findNum， 一个记录findNum出现的次数与其他数之间的差值。我们把数组的第一个数arr[0]作为结果保存findNum跟下一个数字比较，count记为1。
+  - 如果下一个数字跟之前保存的数字findNum相同count+1,
+  - 如果跟之前保存的数字findNum不同，则count-1。
+  - 如果次数为0，我们需要保存它的下一个数字，并且将次数设为1。
+  - 因为要找的数字出现的次数超过数组长度长度的一半，所以最后一次设为1的数字就是我们要找的数字。
+
+### 28.3 算法实现
+#### map方式
+```
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        if(array==null||array.length==0){
+            return 0;
+        }
+        HashMap<Integer,Integer>  map = new HashMap<Integer,Integer>();
+        for(int i=0;i<array.length;i++){
+            if(map.get(array[i])!=null){
+                map.put(array[i],map.get(array[i])+1);
+            }else{
+                map.put(array[i],1);
+            }
+            if(map.get(array[i])>array.length/2){
+                return array[i];
+            }
+        }
+        return 0;  
+    }
+}
+```
+
+#### 方案3
+```
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        if(array == null || array.length == 0 ) {
+            return 0;
+        }
+        int count = 1;
+        int findNum  = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] == findNum) {
+                count++;
+            } else {
+                count --;
+                if (count == 0) {
+                    count = 1;
+                    findNum = array[i];
+                }
+            }
+        }
+        
+        // 注意这边还需要检查一次
+        count =0;
+        for (int a : array) {
+            if (a == findNum) {
+                count ++;
+            }
+        }
+        if (count > array.length/ 2) {
+            return findNum;
+        }
+        return 0;
+    }
+}
+```
+
+
+
 
 
 
