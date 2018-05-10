@@ -1414,26 +1414,30 @@ public class Solution {
         if(input == null || input.length == 0 || input.length < k || k <= 0)//k的范围要注意
             return result;
         int[] maxPQ = new int[k+1];
+        // 初始化
         for(int i = 0; i < k ; i++)
             maxPQ[i+1] = input[i];
-           
+        
+        // 构建一个k长度的最大堆 
         for(int i = k/2; i>=1; i--)
-            sink(maxPQ,k,i);
-          
-        for(int i=k;i<input.length;i++){
+            sink(maxPQ, k, i);
+        
+        // 新元素进来后和堆定元素比较，如果小于堆顶元素，说明该元素可能是top K中的值
+        for(int i = k; i < input.length; i++){
+            // 表示后续还有更小的值
             if(input[i] < maxPQ[1]){
                 maxPQ[1] = input[i];
-                sink(maxPQ,k,1);
+                sink(maxPQ, k, 1);
             }
         }
-        for(int i=1;i<=k;i++)
+        for(int i = 1; i <= k; i++)
             result.add(maxPQ[i]);
         return result;
     }
     private void sink(int[] maxPQ,int N,int k){
         while(k*2 <= N){//这边是等号
-            int j = k*2;
-            if(j< N && maxPQ[j+1] > maxPQ[j]) j++;
+            int j = k * 2;
+            if(j < N && maxPQ[j+1] > maxPQ[j]) j++;
             if(maxPQ[j] < maxPQ[k]) break;
             swap(maxPQ,k,j);
             k = j;
@@ -1446,6 +1450,137 @@ public class Solution {
     }
 }
 ```
+
+### 30. 连续子数组的最大和
+### 30.1 算法描述
+HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)
+
+[牛客网](https://www.nowcoder.com/practice/459bd355da1549fa8a49e350bf3df484?tpId=13&tqId=11183&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 30.2 算法思路
+用两个变量: 1个存储当前和最大值max_sum，一个存储当前连续序列之和sum。 每次遍历一个元素都加到sum中：
+
+ - 如果sum大于max_sum则更新max_sum
+ - 如果sum小于0，比较max_sum判断是否更新，并令sum=0。存在负值，负值影响总和。
+
+### 30.3 算法实现
+```
+public class Solution {
+    public int FindGreatestSumOfSubArray(int[] array) {
+        if (null == array || array.length == 0) {
+            return 0;
+        }
+        int maxSum = Integer.MIN_VALUE;
+        int sum = 0;
+        for (int val : array) {
+            sum += val;
+            if (sum > maxSum) {
+                maxSum = sum;
+            }
+            if (sum < 0) {
+                sum = 0;
+            }
+        }
+        return maxSum;
+    }
+}
+```
+
+## 31. 整数中1出现的次数（从1到n整数中1出现的次数）--看书
+### 31.1 算法描述
+求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数。
+
+[牛客网](https://www.nowcoder.com/practice/bd7f978302044eee894445e244c7eee6?tpId=13&tqId=11184&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 31.2 算法思路
+
+
+### 31.3 算法实现
+```
+public class Solution {
+    public int NumberOf1Between1AndN_Solution(int n) {
+    	int lowNum, curNum, highNum;
+        int offset = 1;
+        int count = 0;
+        while(n/offset != 0) {
+            lowNum = n - (n /offset) * offset;
+            curNum = (n / offset) % 10;
+            highNum = n / (offset * 10 );
+            switch(curNum) {
+                case 0 : count += highNum * offset; break;
+                case 1 : count += highNum * offset + lowNum + 1; break;
+                default: count += (highNum + 1) * offset; break;
+            }
+            offset *= 10;
+        }
+        return count;
+    }
+}
+```
+
+## 32. 把数组排成最小的数
+### 33.1 算法描述
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+
+[牛客网](https://www.nowcoder.com/practice/8fecd3f8ba334add803bf2a06af1b993?tpId=13&tqId=11185&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 33.2 算法思路
+采用快排对数组进行排序，排序规则是如果两个数字A、B组成的新数字AB比BA大，那么A在前B在后。
+
+### 33.3 算法实现
+```
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+public class Solution {
+    public String PrintMinNumber(int [] numbers) {
+        if(numbers == null || numbers.length == 0) {
+            return "";
+        }
+        quickSort(numbers, 0, numbers.length - 1, new MyComparator<Integer>());
+        StringBuilder sb = new StringBuilder();
+        for (int val : numbers) {
+            sb.append(val);
+        }
+        return sb.toString();
+    }
+    private void quickSort(int[] numbers, int left, int right, Comparator cmp) {
+        if (left < right) {
+            int p = partition(numbers, left, right, cmp);
+            quickSort(numbers, left, p - 1, cmp);
+            quickSort(numbers, p + 1, right, cmp);
+        }
+    }
+    
+    private int partition(int[] numbers, int left, int right, Comparator cmp) {
+        int val = numbers[left];
+        while(left < right) {
+            while(left < right && cmp.compare(numbers[right], val) >= 0) right--;
+            if (left < right) {
+                numbers[left++] = numbers[right];
+            }
+            while(left < right && cmp.compare(numbers[left], val) <= 0 ) left++;
+            if (left < right) {
+                numbers[right--] = numbers[left];
+            }
+        }
+        numbers[left] = val;
+        return left;
+    }
+    private class MyComparator<Integer> implements Comparator<Integer>{
+       public int compare(Integer i1, Integer i2) {
+           String str1 = i1 + "" + i2;
+           String str2 = i2 + "" + i1;
+           return str1.compareTo(str2);
+       }
+    }
+}
+```
+
+
+ 
+
+
 
 
 
