@@ -1451,7 +1451,7 @@ public class Solution {
 }
 ```
 
-### 30. 连续子数组的最大和
+## 30. 连续子数组的最大和
 ### 30.1 算法描述
 HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)
 
@@ -1519,15 +1519,15 @@ public class Solution {
 ```
 
 ## 32. 把数组排成最小的数
-### 33.1 算法描述
+### 32.1 算法描述
 输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
 
 [牛客网](https://www.nowcoder.com/practice/8fecd3f8ba334add803bf2a06af1b993?tpId=13&tqId=11185&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
 
-### 33.2 算法思路
+### 32.2 算法思路
 采用快排对数组进行排序，排序规则是如果两个数字A、B组成的新数字AB比BA大，那么A在前B在后。
 
-### 33.3 算法实现
+### 32.3 算法实现
 ```
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1576,6 +1576,54 @@ public class Solution {
     }
 }
 ```
+
+## 33. 丑数
+### 33.1 算法描述
+把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+
+[牛客网](https://www.nowcoder.com/practice/6aa9e04fc3794f68acf8778237ba065b?tpId=13&tqId=11186&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+### 33.2 算法思路
+因此定义一个数组存放当前已找到的所有丑数，已有丑数按增序排列，那么下一个丑数一定是已有丑数分别乘以2、3、5得到的数中大于当前最大丑数中的最小的一个。
+
+为了提高性能，定义了三个指针分别指向已有丑数中分别乘以2、3、5刚好大于当前最大丑数的位置。
+
+
+### 33.3 算法实现
+```
+public class Solution {
+    public int GetUglyNumber_Solution(int index) {
+     	 if (index <= 0) {
+     	     return 0;
+     	 }
+     	int[] uglyNumbers = new int[index];
+        uglyNumbers[0] = 1;
+        int T2 = 0;
+        int T3 = 0;
+        int T5 = 0;
+        int nextUglyIdx = 1;
+        while(nextUglyIdx < index ) {// 不是 <=
+           int min = Math.min(uglyNumbers[T2] * 2, uglyNumbers[T3] * 3);
+            min = Math.min(min, uglyNumbers[T5] * 5);
+            uglyNumbers[nextUglyIdx] = min; // 这个值需要先存进去，如果放在三个while之后就会出错
+            while(uglyNumbers[T2] * 2 <= min) T2++; // 小于等于
+            while(uglyNumbers[T3] * 3 <= min) T3++;
+            while(uglyNumbers[T5] * 5 <= min) T5++;
+            nextUglyIdx++;
+        }
+        return uglyNumbers[index - 1];
+    }
+}
+```
+
+## 34. 第一个只出现一次的字符
+### 34.1 算法描述
+在一个字符串(1<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置
+
+[牛客网](https://www.nowcoder.com/practice/1c82e8cf713b4bbeb2a5b31cf5b0417c?tpId=13&tqId=11187&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+
+
 
 
  
