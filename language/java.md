@@ -18,7 +18,10 @@
 
 
 ## 三. 网络编程
-### 3.1 Netty 4.x
+### 3.1 socket编程
+- [Java Socket编程基础及深入讲解](https://www.cnblogs.com/yiwangzhibujian/p/7107785.html)
+
+### 3.2 Netty 4.x
 - [Netty 4.x 用户指南](http://wiki.jikexueyuan.com/project/netty-4-user-guide/)
 - [Netty4 自定义Decoder，Encoder进行对象传递](https://www.cnblogs.com/hupengcool/p/3931721.html)
 
