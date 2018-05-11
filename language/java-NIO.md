@@ -1,5 +1,15 @@
 # Java NIO
 ## 一. Java NIO 概述
+### Java I/O模型
+#### 阻塞 vs. 非阻塞
+**阻塞**: 某个请求发出后，由于该请求操作需要的条件不满足，请求操作一直阻塞，不会返回，直到条件满足。
+
+**非阻塞**: 请求发出后，若该请求需要的条件不满足，则立即返回一个标志信息告知条件不满足，而不会一直等待。一般需要通过循环判断请求条件是否满足来获取请求结果。
+
+#### 同步 vs. 异步
+
+
+
 ### 流与块的比较
 原来的 I/O 库(在 java.io.*中) 与 NIO 最重要的区别是数据打包和传输的方式。正如前面提到的，原来的 I/O 以流的方式处理数据，而 NIO 以块的方式处理数据。
 
@@ -665,7 +675,7 @@ java IO的各种流是阻塞的。这意味着，当一个线程调用read() 或
 Java NIO的选择器允许一个单独的线程来监视多个输入通道，你可以注册多个通道使用一个选择器，然后使用一个单独的线程来“选择”通道：这些通道里已经有可以处理的输入，或者选择已准备写入的通道。这种选择机制，使得一个单独的线程很容易来管理多个通道。
 
 
-
+## 参考
 - [Java进阶（五）Java I/O模型从BIO到NIO和Reactor模式](http://www.jasongj.com/java/nio_reactor/)
 - [Java Network Programming](https://doc.lagout.org/programmation/Java/Java%20Network%20Programming.pdf)
 - [Java Socket编程基础及深入讲解](https://www.cnblogs.com/yiwangzhibujian/p/7107785.html)
