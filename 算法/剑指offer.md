@@ -1622,8 +1622,122 @@ public class Solution {
 
 [牛客网](https://www.nowcoder.com/practice/1c82e8cf713b4bbeb2a5b31cf5b0417c?tpId=13&tqId=11187&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
 
+### 34.2 算法思路
+为了解决这个问题，我们可以定义一个哈希表（外部空间），其键值（Key）是字符，而值（Value）是该字符出现的次数。
 
+同时我们还需要从头开始扫描字符串两次：
 
+ - 第一次扫描字符串时，每扫描到一个字符就在哈希表的对应项中把次数加1。（时间效率O(n)）
+ - 第二次扫描时，每扫描到一个字符就能从哈希表中得到该字符出现的次数。这样第一个只出现一次的字符就是符合要求的输出。（时间效率O(n)）
+　　
+### 34.3 算法实现
+```
+public class Solution {
+    public int FirstNotRepeatingChar(String str) {
+        if (null == str || str.length() == 0) {
+            return -1;
+        }
+        char[] charMap = new char[256];
+        for (int i = 0; i < str.length(); i ++) {
+            charMap[str.charAt(i)]++;
+        }
+       
+        for (int i = 0; i < str.length(); i ++) {
+            if (charMap[str.charAt(i)] == 1)
+                return i;
+        }
+        return -1;
+    }
+}
+```
+
+## 35. 数组中的逆序对--看书
+### 35.1 算法描述
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+
+[牛客网](https://www.nowcoder.com/practice/96bd6684e04a44eb80e6a68efc0ec6c5?tpId=13&tqId=11188&tPage=2&rp=2&ru=%2Fta%2Fcoding-interviews&qru=%2Fta%2Fcoding-interviews%2Fquestion-ranking)
+
+题目保证输入的数组中没有的相同的数字
+
+数据范围：
+
+```
+	对于%50的数据,size<=10^4
+	对于%75的数据,size<=10^5
+	对于%100的数据,size<=2*10^5
+```
+
+示例1:
+
+```
+输入
+1,2,3,4,5,6,7,0
+输出
+7
+```
+
+### 35.2 算法思路
+<img src="media/15260180025752.jpg" width="600px">
+
+采用归并排序算法思路，先把数组分隔成子数组，先统计出子数组内部的逆序对的数目，然后再统计出两个相邻子数组之间的逆序对的数目。在统计逆序对的过程中，还需要对数组进行排序。
+
+### 35.3 算法实现
+```
+public class Solution {
+   public int InversePairs(int [] array) {
+        if(array == null || array.length == 0)
+        {
+            return 0;
+        }
+        int[] copy = new int[array.length];
+        for(int i = 0; i < array.length; i++)
+        {
+            copy[i] = array[i];
+        }
+        int count = inversePairsCore(array, copy, 0, array.length-1) % 1000000007; // 数值过大求余
+        return count;
+          
+    }
+    private int inversePairsCore(int[] array,int[] copy,int low,int high)
+    {
+        if(low == high)
+        {
+            return 0;
+        }
+        int mid = (low + high) >> 1;
+        int leftCount = inversePairsCore(array, copy, low, mid) % 1000000007;
+        int rightCount = inversePairsCore(array, copy, mid+1, high) % 1000000007;
+        int count = 0;
+        int leftIdx = mid;
+        int rightIdx = high;
+        int copyIdx = high;
+        while(leftIdx >= low && rightIdx > mid)
+        {
+            if(array[leftIdx] > array[rightIdx])
+            {
+                count += rightIdx - mid; // 不需要再减1
+                copy[copyIdx--] = array[leftIdx--];
+                if(count > 1000000007) // 数值过大求余
+                {
+                    count %= 1000000007;
+                }
+            }
+            else
+            {
+                copy[copyIdx--] = array[rightIdx--];
+            }
+        }
+        while(rightIdx > mid ) copy[copyIdx--] = array[rightIdx--];
+        while(leftIdx >= low)  copy[copyIdx--] = array[leftIdx--];
+        
+        for(int i = low; i <= high; i++)
+        {
+            array[i] = copy[i];
+        }
+        return (leftCount + rightCount + count) % 1000000007;
+    }
+}
+```
 
 
  
