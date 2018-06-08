@@ -9,3 +9,5 @@
   - [防痴呆设计](http://dubbo.apache.org/books/dubbo-dev-book/principals/dummy.html)
   - [扩展点重构](http://dubbo.apache.org/books/dubbo-dev-book/principals/extension.html)
 
+
+
