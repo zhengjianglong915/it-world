@@ -50,6 +50,58 @@ class Solution {
 }
 ```
 
+## 2. 两数相加(Add Two Numbers)
+- [中文版本地址](https://leetcode-cn.com/problems/add-two-numbers/description/)
+- [英文版本地址](https://leetcode.com/problems/add-two-numbers/description/)
+
+### 2.1 算法描述
+给定两个非空链表来表示两个非负整数。位数按照逆序方式存储，它们的每个节点只存储单个数字。将两数相加返回一个新的链表。
+
+你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+
+### 2.2 算法思路
+1. 定义两个针织，分别指向两个链表的当前节点
+2. 用sum记录前面两个节点的计算之和，用来做进位
+3. 不断遍历两个链表，计算两节点、及进位数之和
+4. 构建新节点采用尾插入
+
+### 2.3 算法实现
+
+```<java>
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode c1 = l1;
+        ListNode c2 = l2;
+        ListNode head = new ListNode(0);
+        ListNode p = head;
+        int sum = 0;
+        while (c1 != null || c2 != null) {
+            sum /= 10; // 得到进位
+            if (c1 != null ) {
+                sum += c1.val;
+                c1 = c1.next;
+            }
+            if (c2 != null) {
+                sum += c2.val;
+                c2 = c2.next;
+            }
+            p.next = new ListNode(sum % 10);
+            p = p.next;
+        }
+        if (sum / 10 == 1) p.next = new ListNode(1);
+        return head.next;
+    }
+}
+```
+
 
 ## 8. String to Integer (atoi)
 https://leetcode.com/problems/string-to-integer-atoi/description/
@@ -106,6 +158,117 @@ class Solution {
           
         int ret = (int)tmp;  
         return ret; 
+    }
+}
+```
+
+## 12. 整数转罗马数字(Integer to Roman)
+- [英文版本地址](https://leetcode.com/problems/integer-to-roman/description/)
+- [中文版本地址](https://leetcode-cn.com/problems/integer-to-roman/description/)
+
+### 12.1 算法描述
+
+### 12.2 算法思路
+参考： https://blog.csdn.net/makuiyu/article/details/43267973
+
+1. 相同的数字连写，所表示的数等于这些数字相加得到的数，如：III = 3；
+2. 小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数， 如：VIII = 8；XII = 12；
+3. 小的数字，（限于I、X 和C）在大的数字的左边，所表示的数等于大数减小数得到的数，如：IV= 4；IX= 9；
+4. 正常使用时，连写的数字重复不得超过三次。（表盘上的四点钟“IIII”例外）
+5. 在一个数的上面画一条横线，表示这个数扩大1000倍。（本题用不到这点）
+
+有几条须注意掌握：
+
+1. 基本数字I、X、C中的任何一个，自身连用构成数目，或者放在大数的右边连用构成数目，都不能超过三个；放在大数的左边只能用一个。
+2. 不能把基本数字V、L、D中的任何一个作为小数放在大数的左边采用相减的方法构成数目；放在大数的右边采用相加的方式构成数目，只能使用一个。
+3. V和X左边的小数字只能用I，且只能有1个。
+4. L和C左边的小数字只能用X，且只能有1个。
+5. D和M左边的小数字只能用C，且只能有1个。
+
+看懂了上面的规则后，就可以对数字的每位逐个判断即可。可以归纳出如下4种情形：
+
+- 如果该位数字是9，则说明是上面3、4、5这三种情况中的一种，即把I、X、C中的一个放到了大数字的左侧；
+- 如果该位数字是5~8，则说明是上面1这种情况，即I、X、C中的一个，自身连用或者放在大数的右边连用；
+- 如果该位数字是4，则说明同样是上面3、4、5这三种情况中的一种，即把I、X、C中的一个放到了大数字的左侧；
+- 如果该位数字是0~3，则同样说明是上面1这种情况，即I、X、C中的一个，自身连用或者放在大数的右边连用。
+
+进一步，可以看到，罗马数字可以分为1、4、5、9这四种构成方式，而1-3999中，共有1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1，共计13种，依次分别对应"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"，即：
+
+整数数字  1000 900 500 400 100 90 50 40 10 9  5 4  1
+罗马数字  M    CM  D   CD  C   XC L  XL X  IX V IV I
+
+### 12.3 算法实现
+
+```<java>
+class Solution {
+    public String intToRoman(int num) {
+        int[]  values = new int[]{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] strs = new String[]{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < values.length; i++ ) {
+            while(num >= values[i]) { // 等于
+                num -= values[i];
+                sb.append(strs[i]);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+## 13. 罗马数字转整数（Roman to Integer）
+- [英文版本地址](https://leetcode.com/problems/roman-to-integer/description/)
+- [中文版本地址](https://leetcode-cn.com/problems/roman-to-integer/description/)
+
+### 13.1 算法描述
+
+### 13.2 算法思路
+参考： https://www.cnblogs.com/grandyang/p/4120857.html
+
+方法一：
+
+我们需要用到map数据结构，来将罗马数字的字母转化为对应的整数值，因为输入的一定是罗马数字，那么我们只要考虑两种情况即可：
+
+- 第一，如果当前数字是最后一个数字，或者之后的数字比它小的话，则加上当前数字
+- 第二，其他情况则减去这个数字
+
+
+方法二： 
+
+我们也可以每次跟前面的数字比较，如果小于等于前面的数字，我们先加上当前的数字，如果大于的前面的数字，我们加上当前的数字减去二倍前面的数字，这样可以把在上一个循环多加数减掉
+
+方法三：
+
+每次和后面的数字比较，如果小于后面的数字，则减去当前的值，如果大于后面的值则加上当前值。最后加上剩下的最后一个数字。
+
+
+### 13.3 算法实现
+方法三:
+
+```<java>
+class Solution {
+    public int romanToInt(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        char[] chars = s.toCharArray();
+        int result = 0;
+        // i 当前位置，j后一位
+        int i = 0, j = 1;
+        for(; j < chars.length; i++, j++) {
+            if (map.get(chars[i]) >= map.get(chars[j])) {
+                result += map.get(chars[i]);
+            } else {
+                result -= map.get(chars[i]);
+            }
+        }
+        result += map.get(chars[i]);
+        return result;
     }
 }
 ```
@@ -966,111 +1129,6 @@ class Solution {
 }
 ```
 
-## 2. 两数相加(Add Two Numbers)
-- [中文版本地址](https://leetcode-cn.com/problems/add-two-numbers/description/)
-- [英文版本地址](https://leetcode.com/problems/add-two-numbers/description/)
-
-### 2.1 算法描述
-给定两个非空链表来表示两个非负整数。位数按照逆序方式存储，它们的每个节点只存储单个数字。将两数相加返回一个新的链表。
-
-你可以假设除了数字 0 之外，这两个数字都不会以零开头。
-
-### 2.2 算法思路
-1. 定义两个针织，分别指向两个链表的当前节点
-2. 用sum记录前面两个节点的计算之和，用来做进位
-3. 不断遍历两个链表，计算两节点、及进位数之和
-4. 构建新节点采用尾插入
-
-### 2.3 算法实现
-
-```<java>
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode c1 = l1;
-        ListNode c2 = l2;
-        ListNode head = new ListNode(0);
-        ListNode p = head;
-        int sum = 0;
-        while (c1 != null || c2 != null) {
-            sum /= 10; // 得到进位
-            if (c1 != null ) {
-                sum += c1.val;
-                c1 = c1.next;
-            }
-            if (c2 != null) {
-                sum += c2.val;
-                c2 = c2.next;
-            }
-            p.next = new ListNode(sum % 10);
-            p = p.next;
-        }
-        if (sum / 10 == 1) p.next = new ListNode(1);
-        return head.next;
-    }
-}
-```
-
-## 12. 整数转罗马数字(Integer to Roman)
-- [英文版本地址](https://leetcode.com/problems/integer-to-roman/description/)
-- [中文版本地址](https://leetcode-cn.com/problems/integer-to-roman/description/)
-
-### 12.1 算法描述
-
-### 12.2 算法思路
-参考： https://blog.csdn.net/makuiyu/article/details/43267973
-
-1. 相同的数字连写，所表示的数等于这些数字相加得到的数，如：III = 3；
-2. 小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数， 如：VIII = 8；XII = 12；
-3. 小的数字，（限于I、X 和C）在大的数字的左边，所表示的数等于大数减小数得到的数，如：IV= 4；IX= 9；
-4. 正常使用时，连写的数字重复不得超过三次。（表盘上的四点钟“IIII”例外）
-5. 在一个数的上面画一条横线，表示这个数扩大1000倍。（本题用不到这点）
-
-有几条须注意掌握：
-
-1. 基本数字I、X、C中的任何一个，自身连用构成数目，或者放在大数的右边连用构成数目，都不能超过三个；放在大数的左边只能用一个。
-2. 不能把基本数字V、L、D中的任何一个作为小数放在大数的左边采用相减的方法构成数目；放在大数的右边采用相加的方式构成数目，只能使用一个。
-3. V和X左边的小数字只能用I，且只能有1个。
-4. L和C左边的小数字只能用X，且只能有1个。
-5. D和M左边的小数字只能用C，且只能有1个。
-
-看懂了上面的规则后，就可以对数字的每位逐个判断即可。可以归纳出如下4种情形：
-
-- 如果该位数字是9，则说明是上面3、4、5这三种情况中的一种，即把I、X、C中的一个放到了大数字的左侧；
-- 如果该位数字是5~8，则说明是上面1这种情况，即I、X、C中的一个，自身连用或者放在大数的右边连用；
-- 如果该位数字是4，则说明同样是上面3、4、5这三种情况中的一种，即把I、X、C中的一个放到了大数字的左侧；
-- 如果该位数字是0~3，则同样说明是上面1这种情况，即I、X、C中的一个，自身连用或者放在大数的右边连用。
-
-进一步，可以看到，罗马数字可以分为1、4、5、9这四种构成方式，而1-3999中，共有1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1，共计13种，依次分别对应"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"，即：
-
-整数数字  1000 900 500 400 100 90 50 40 10 9  5 4  1
-罗马数字  M    CM  D   CD  C   XC L  XL X  IX V IV I
-
-### 12.3 算法实现
-
-```<java>
-class Solution {
-    public String intToRoman(int num) {
-        int[]  values = new int[]{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-        String[] strs = new String[]{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < values.length; i++ ) {
-            while(num >= values[i]) { // 等于
-                num -= values[i];
-                sb.append(strs[i]);
-            }
-        }
-        return sb.toString();
-    }
-}
-```
 
 
 
