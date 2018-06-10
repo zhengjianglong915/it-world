@@ -501,10 +501,18 @@ public class Solution {
 }
 ```
 
+## 22. 括号生成(Generate Parentheses)
+- [英文版地址](https://leetcode.com/problems/generate-parentheses/description/)
+- [中文版地址](https://leetcode-cn.com/problems/generate-parentheses/description/)
+
+### 22.1 算法描述
+### 22.2 算法思路
+### 22.3 算法实现
+
 
 ## 28. 实现strStr()(Implement strStr())---字符串匹配
 - [英文版地址](https://leetcode.com/problems/implement-strstr/description/)
-- [中文版地址]()
+- [中文版地址](https://leetcode-cn.com/problems/implement-strstr/description/)
 
 ### 28.1 算法描述
 实现 strStr() 函数。
