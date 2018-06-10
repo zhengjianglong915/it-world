@@ -449,30 +449,74 @@ class Solution {
 ### 56.3 算法实现
 
 ```<java>
-public List<Interval> merge(List<Interval> intervals) {
-    if (intervals.size() <= 1)
-        return intervals;
-    
-    // Sort by ascending starting point using an anonymous Comparator
-    intervals.sort((i1, i2) -> Integer.compare(i1.start, i2.start));
-    
-    List<Interval> result = new LinkedList<Interval>();
-    int start = intervals.get(0).start;
-    int end = intervals.get(0).end;
-    
-    for (Interval interval : intervals) {
-        if (interval.start <= end) // Overlapping intervals, move the end if needed
-            end = Math.max(end, interval.end);
-        else {                     // Disjoint intervals, add the previous one and reset bounds
-            result.add(new Interval(start, end));
-            start = interval.start;
-            end = interval.end;
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        if (intervals == null || intervals.size() == 0) return intervals;
+        
+        // Sort by ascending starting point using an anonymous Comparator
+        Collections.sort(intervals, new Comparator<Interval>(){
+              public int compare(Interval a, Interval b)
+              {
+                  return a.start - b.start;
+              }
+         });;
+        //  或者使用
+        // intervals.sort((i1, i2) -> Integer.compare(i1.start, i2.start)); 
+        
+        List<Interval> result = new LinkedList<Interval>();
+        // 当前的开始和结束位置
+        int start = intervals.get(0).start;
+        int end = intervals.get(0).end;
+        
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval interval = intervals.get(i);
+            
+            if (interval.start <= end) { // Overlapping intervals, move the end if needed
+                end = Math.max(end, interval.end);
+            } else {
+                result.add(new Interval(start, end));  // Disjoint intervals, add the previous one and reset bounds
+                start = interval.start;
+                end = interval.end;
+            }
         }
+        
+        // Add the last interval
+        result.add(new Interval(start, end));
+        return result;
     }
-    
-    // Add the last interval
-    result.add(new Interval(start, end));
-    return result;
 }
 ```
+
+## 57. 插入区间（Insert Interval）
+- [英文版本地址](https://leetcode.com/problems/insert-interval/description/)
+- [中文版本地址](https://leetcode-cn.com/problems/insert-interval/description/)
+
+### 57.1 算法描述
+给出一个无重叠的 ，按照区间起始端点排序的区间列表。
+
+在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+
+示例 1:
+
+>输入: intervals = [[1,3],[6,9]], newInterval = [2,5]
+>输出: [[1,5],[6,9]]
+
+示例 2:
+
+>输入: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+>输出: [[1,2],[3,10],[12,16]]
+>解释: 这是因为新的区间 [4,8] 与 [3,5],[6,7],[8,10] 重叠。
+
+
+### 57.2 算法思路
+1. 从头遍历区间列表，将
 
