@@ -1,5 +1,10 @@
 # LeetCode算法题汇总
-刷题顺序 https://blog.csdn.net/lnho2015/article/details/50962989
+
+刷题顺序:
+
+- https://blog.csdn.net/lnho2015/article/details/50962989
+- [leetcode难度及面试频率](https://blog.csdn.net/yutianzuijin/article/details/11477603)
+- [leetcode面试频率](https://blog.csdn.net/alpaca12/article/details/51647261)
 
 ## 1. 两数之和(Two Sum)
 地址： 
@@ -246,10 +251,10 @@ class Solution {
 }
 ```
 
+## 20.有效的括号(Valid Parentheses)
+- [中文版本地址](https://leetcode-cn.com/problems/valid-parentheses/description/)
+- [英文版本地址](https://leetcode.com/problems/valid-parentheses/description/)
 
-
-## 20. Valid Parentheses 
-https://leetcode.com/problems/valid-parentheses/submissions/1
 ### 算法描述
 Given a string containing just the characters , determine if the input string is valid.
 
@@ -418,6 +423,51 @@ class Solution {
 }
 ```
 
+## 50. Pow(x, n)
+- [中文版本地址](https://leetcode-cn.com/problems/powx-n/description/)
+- [英文版本地址](https://leetcode.com/problems/powx-n/description/)
+
+### 50.1 算法描述
+实现 pow(x, n) ，即计算 x 的 n 次幂函数。
+
+### 50.2 算法思路
+注意细节：
+
+- n需要考虑负数情况
+- x可能存在为0的情况
+
+
+### 50.3 算法实现
+
+```<java>
+class Solution {
+    public double myPow(double x, int n) {
+        if(x == 0 && n < 0) 
+            throw new IllegalArgumentException("参数非法");
+        
+        boolean flag = false;
+        if (n < 0) {
+            flag = true;
+        }
+        double result = doPower(x, n);
+        if (flag) return 1.0 / result;
+        else return result;
+    }
+    
+    private double doPower(double base, int exp) {
+        if (exp == 0 )
+            return 1;
+        if (exp % 2 == 0) {
+            double r1 = doPower(base, exp / 2);
+            return r1 * r1;
+        } else {
+            double r1 = doPower(base, exp/2);
+            return r1 * r1 * base;
+        }
+    }
+}
+```
+
 ## 56. 合并区间（Merge Intervals）
 - [英文版本地址](https://leetcode.com/problems/merge-intervals/description/)
 - [中文版本地址](https://leetcode-cn.com/problems/merge-intervals/description/)
@@ -518,5 +568,326 @@ class Solution {
 
 
 ### 57.2 算法思路
-1. 从头遍历区间列表，将
+题目中已经说已排序了，因此可以从头往下遍历。如果是无序的，还需要排序一次: 
+
+1. 从头遍历区间列表，将所有结束值小于新插入区间的开始值的所有区间加入结果集。
+2. 对重叠的区间进行合并
+3. 将合并后的区间加入到结果集中
+4. 将剩下的内容也加到结果集
+
+
+### 57.3 算法实现
+
+```<java>
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        if (intervals == null || newInterval == null ) return intervals;
+        List<Interval> result = new LinkedList<>();
+        int i = 0;
+        // add all the intervals ending before newInterval starts
+        while (i < intervals.size() && intervals.get(i).end < newInterval.start) {
+            result.add(intervals.get(i));
+            i++;
+        }
+        
+        // merge all overlapping intervals to one considering newInterval, 注意等号
+        while(i < intervals.size() && intervals.get(i).start <= newInterval.end) {
+            newInterval = new Interval( // we could mutate newInterval here also
+                    Math.min(newInterval.start, intervals.get(i).start),
+                    Math.max(newInterval.end, intervals.get(i).end));
+            i++;
+        }
+        
+        // add the union of intervals we got
+        result.add(newInterval);
+         // add all the rest
+        while (i < intervals.size()) result.add(intervals.get(i++)); 
+        return result;
+    }
+}
+```
+
+## 65. 有效数字(Valid Number)
+
+- [中文版地址](https://leetcode-cn.com/problems/valid-number/description/) 
+- [英文版地址](https://leetcode.com/problems/valid-number/description/)
+### 65.1 算法描述
+
+### 65.2 算法思路
+三种解法: [Leetcode: Valid Number的三种解法](http://lib.csdn.net/article/datastructure/13674)
+
+有三种方法：
+
+1. 根据正则表达式匹配，面试的时候恐怕不会允许简简单单的用正则表达式来解决这个问题， 所以还要掌握其他方法。
+2. 采用有穷状态机 DFA： https://www.cnblogs.com/higerzhang/p/4086191.html
+3. 设置一些标志变量来进行判断
+
+### 65.3 算法实现
+#### 方法三
+
+```<java>
+class Solution {
+    public boolean isNumber(String s) {
+        if (s == null || s.trim().length() == 0) return false;
+        s = s.trim();
+        boolean seenNum = false;
+        boolean seenE = false;
+        boolean seenDot = false;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch(c) {
+                case '+':
+                case '-':
+                    if (i != 0 && s.charAt(i - 1) != 'e') return false; // 如果sign不是第一个字符，那么前面一定是e
+                    seenNum = false; // 重要
+                    break;
+                case '.':
+                    if (seenDot || seenE) return false; // 已经有小数点了，或存在e
+                    seenDot = true;
+                    break;
+                case 'e':
+                    if (seenE || !seenNum) return false; // e前面必须有数字
+                    seenE = true;
+                    seenNum = false; // 重要
+                    break;
+                default:
+                    if (c - '0' < 0 || c - '0' > 9) return false; // 非数字
+                    seenNum = true;
+                    break;
+            }
+        }
+        return seenNum;
+    }
+}
+```
+
+
+## 70. 爬楼梯(Climbing Stairs)
+- [中文版地址](https://leetcode-cn.com/problems/climbing-stairs/description/)
+- [英文版地址](https://leetcode.com/problems/climbing-stairs/description/)
+
+### 70.1 算法描述
+假设你正在爬楼梯。需要 n 步你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+注意：给定 n 是一个正整数。
+
+### 70.2 算法思路
+和斐波那契数列一样，采用动态规划的方式记录前一步和前两步
+
+### 70.3 算法实现
+```
+class Solution {
+    public int climbStairs(int n) {
+        if (n <= 0 ) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+        int preOne = 2; 
+        int preTwo = 1;
+        for (int i = 3; i <= n; i++) {
+            int temp = preOne;
+            preOne = preOne + preTwo;
+            preTwo = temp;
+        }
+        return preOne;
+    }
+}
+```
+
+## 73. 矩阵置零（Set Matrix Zeroes）
+
+- [中文版本地址](https://leetcode-cn.com/problems/set-matrix-zeroes/description/)
+- [英文版本地址](https://leetcode.com/problems/set-matrix-zeroes/description/)
+### 73.1 算法描述
+给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+### 73.2 算法思路
+方法：
+
+1. 这道题中说的空间复杂度为O(mn)的解法自不用多说，直接新建一个和matrix等大小的矩阵，然后一行一行的扫，只要有0，就将新建的矩阵的对应行全赋0，行扫完再扫列，然后把更新完的矩阵赋给matrix即可，这个算法的空间复杂度太高。
+1. 牺牲空间，遍历矩阵有一个map或set记录需要设置为0的行和列。 然后再遍历一次，将这些行和列都设置为0；但是空间复杂度较大。空间复杂度O(m+n)
+2. O(1)空间复杂度解法.我们考虑就用原数组的第一行第一列来记录各行各列是否有0.
+    - 扫描整个数组，如果有0，则将对应的第一行和第一列的数字赋0
+    - 再次遍历除去第一行第一列的整个数组，如果对应的第一行和第一列的数字有一个为0，则将当前值赋0
+    - 最后根据第一行第一列的flag来更新第一行第一列
+
+
+### 73.3 算法实现
+方法三：
+
+```<java>
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        // 用于记录第一行和第一列列是否需要被更新
+        boolean fr = false, fc = false;
+        
+        // 遍历整个数组，用原数组的第一行第一列来记录各行各列是否有0.
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                if(matrix[i][j] == 0) {
+                    if(i == 0) fr = true;
+                    if(j == 0) fc = true;
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+        
+        // 再次遍历除去第一行第一列的整个数组，如果对应的第一行和第一列的数字有一个为0，则将当前值赋0
+        for(int i = 1; i < matrix.length; i++) {
+            for(int j = 1; j < matrix[0].length; j++) {
+                if(matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        
+        // 第一行需要更新，则全部更新 
+        if(fr) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+        
+        // 第一列需要更新，则全部更新
+        if(fc) {
+            for(int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+```
+
+## 88. 合并两个有序数组(Merge Sorted Array)
+- [英文版本](https://leetcode-cn.com/problems/merge-sorted-array/description/)
+- [中文版本](https://leetcode.com/problems/merge-sorted-array/description/)
+
+### 88.1 算法描述
+给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
+
+说明:
+
+- 初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
+- 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
+
+### 88.2 算法思路
+因为不能开辟新的内存空间，所以需要从后往前遍历。
+
+### 88.3 算法实现
+
+```<java>
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1, j = n - 1, idx = m + n - 1;
+        while (i >= 0 && j >= 0)
+            nums1[idx--] = nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
+        while (j >= 0)
+            nums1[idx--] = nums2[j--];
+    }
+}
+```
+
+
+## 98. 验证二叉搜索树
+ 
+- [中文版本地址](https://leetcode-cn.com/problems/validate-binary-search-tree/description/)
+- [英文版本地址](https://leetcode.com/problems/validate-binary-search-tree/description/)
+
+### 98.1 算法描述
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+一个二叉搜索树具有如下特征：
+
+- 如果左孩子不为空，则节点的左子树只包含小于当前节点的数。
+- 如果由孩子不为空，则节点的右子树只包含大于当前节点的数。
+- 所有左子树和右子树自身必须也是二叉搜索树。
+
+
+### 98.2 算法思路
+根据二叉排序树的性质，在进行中序遍历的时候，当前结点的值总是大于前驱结点的值，需要在遍历时保存前驱结点的值，这样有利于进行判断，基于这样的思路来进行解题。
+
+### 98.3 算法实现
+
+```<java>
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private boolean flag = true;
+    private TreeNode last = null; // 前驱
+    
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        
+        if (root.left != null && flag) 
+            isValidBST(root.left);
+        
+        if (last != null && root.val <= last.val) { // 等于都不可以
+            flag = false;
+        }
+    
+        last = root;
+        if (root.right != null && flag) 
+            isValidBST(root.right);
+        return flag;
+    }
+}
+```
+
+## 125. 验证回文串（Valid Palindrome）
+### 125.1 算法描述
+
+### 125.2 算法思路
+验证回文字符串是比较常见的问题，所谓回文，就是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串。但是这里，加入了空格和非字母数字的字符，增加了些难度，但其实原理还是很简单：只需要建立两个指针，left和right, 分别从字符的开头和结尾处开始遍历整个字符串，如果遇到非字母数字的字符就跳过，继续往下找，直到找到下一个字母数字或者结束遍历，如果遇到大写字母，就将其转为小写。等左右指针都找到字母数字时，比较这两个字符，若相等，则继续比较下面两个分别找到的字母数字，若不相等，直接返回false. 
+
+时间复杂度为O(n)
+
+### 125.3 算法实现
+
+```<java>
+class Solution {
+    public boolean isPalindrome(String s) {
+        if (s.isEmpty()) {
+        	return true;
+        }
+        int head = 0, tail = s.length() - 1;
+        while(head <= tail) {
+            // 过滤掉特殊符号， isLetterOrDigit 有坑，如果是中文会默认返回true
+        	while (head < s.length() && !valid(s.charAt(head))) head++;
+            while(tail > 0 && !valid(s.charAt(tail))) tail--;
+            
+            if (head < tail && Character.toLowerCase(s.charAt(head)) != Character.toLowerCase(s.charAt(tail))) {
+                return false;
+            }
+            head++;
+            tail--;
+        }
+        return true;
+    }
+    
+     public boolean valid(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+    }
+}
+```
+
+
+
 
