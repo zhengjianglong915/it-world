@@ -888,8 +888,6 @@ class Solution {
 }
 ```
 
-
-
 ## 127. 单词接龙（Word Ladder）
 - [英文版本地址](https://leetcode.com/problems/word-ladder/description/)
 - [中文版本地址](https://leetcode-cn.com/problems/word-ladder/description/)
@@ -911,7 +909,10 @@ class Solution {
 ### 127.2 算法思路
 参考: https://www.jianshu.com/p/753bd585d57e
 
-采用BSF（广度优先遍历）的方式一层层遍历
+采用BSF（广度优先遍历）的方式一层层遍历, 以题目给出的例子为例，其实就是在所有路径的权重都为1的情况下求出下列无向图中从节点hit到节点cog的最短路径：
+
+![](../images/15286379171655.jpg)
+
 
 ### 127.3 算法实现
 
@@ -965,6 +966,7 @@ class Solution {
 }
 ```
 
+## 2. Add Two Numbers
 
 
 
