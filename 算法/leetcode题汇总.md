@@ -890,4 +890,84 @@ class Solution {
 
 
 
+## 127. 单词接龙（Word Ladder）
+- [英文版本地址](https://leetcode.com/problems/word-ladder/description/)
+- [中文版本地址](https://leetcode-cn.com/problems/word-ladder/description/)
+
+### 127.1 算法描述
+给定两个单词（beginWord 和 endWord）和一个字典，找到从 beginWord 到 endWord 的最短转换序列的长度。转换需遵循如下规则：
+
+- 每次转换只能改变一个字母。
+- 转换过程中的中间单词必须是字典中的单词。
+
+说明:
+
+- 如果不存在这样的转换序列，返回 0。
+- 所有单词具有相同的长度。
+- 所有单词只由小写字母组成。
+- 字典中不存在重复的单词。
+- 你可以假设 beginWord 和 endWord 是非空的，且二者不相同。
+
+### 127.2 算法思路
+参考: https://www.jianshu.com/p/753bd585d57e
+
+采用BSF（广度优先遍历）的方式一层层遍历
+
+### 127.3 算法实现
+
+```<java>
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // Use queue to help BFS
+        Queue<String> queue = new LinkedList<String>();
+        queue.add(beginWord);
+        queue.add(null);
+
+        // Mark visited word
+        Set<String> visited = new HashSet<String>();
+        visited.add(beginWord);
+        
+        // convert to set
+        Set<String> wordDict = new HashSet<>(wordList);
+        
+        int level = 1;
+        while (!queue.isEmpty()) {
+            String str = queue.poll();
+            if (str != null) {
+                // Modify str's each character (so word distance is 1)
+                for (int i = 0; i < str.length(); i++) {
+                    char[] chars = str.toCharArray();
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[i] = c;
+                        String word = new String(chars);
+
+                        // Found the end word
+                        if (wordDict.contains(word) && word.equals(endWord)) return level + 1;
+
+                        // Put it to the queue
+                        if (wordDict.contains(word) && !visited.contains(word)) {
+                            queue.offer(word);
+                            visited.add(word);
+                        }
+                    }
+                }
+            } else {
+                // 一层已经遍历完成
+                level++;
+                if (!queue.isEmpty()) { 
+                    // 作为下一层标志，用来计算level
+                    queue.add(null);
+                }
+            }
+        }
+       return 0;
+    }
+}
+```
+
+
+
+
+
+
 
