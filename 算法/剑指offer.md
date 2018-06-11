@@ -1744,10 +1744,122 @@ public class Solution {
 输入两个链表，找出它们的第一个公共结点。
 
 ### 36.2 算法思路
-1. 计算
+1. 计算两个链表长度
+2. 计算两个链表长度之差
+3. 定义两个指针，快的移动长链表多出来的节点数量的步数
+4. 然后两个指针同时往前移动，如果相同则直接返回。
 
 ### 36.3 算法实现
 
+```<java>
+public class Solution {
+    public ListNode findFirstCommonNode(ListNode node1, ListNode node2) {
+        if(node1 == null || node2 == null)
+            return null;
+        ListNode longLink = node1;
+        ListNode shortLink = node2;
+        int longLen = linkLength(node1);
+        int shortLen = linkLength(node2);
+        
+        int step = 0;
+        if (longLen < shortLen) {
+            longLink = node2;
+            shortLink = node1;
+            step = shortLen - longLen;
+        } else {
+            step = longLen - shortLen;
+        }
+        // 先移动
+        while(step > 0 ){
+            longLink = longLink.next;
+            step --;
+        }
+        while(longLink != null && shortLink != null) {
+            if (longLink == shortLink) {
+                return longLink;
+            } else {
+                longLink = longLink.next;
+                shortLink = shortLink.next;
+            }
+        }
+        return null;
+    }
+    
+    private int linkLength(ListNode node) {
+        if(node == null) {
+            return 0;
+        }
+        ListNode curNode = node;
+        int count = 1;
+        while (curNode.next != null) {
+            curNode = curNode.next;
+            count ++;
+        }
+        return count;
+    }
+}
+```
+
+## 37.数字在排序数组中出现的次数
+### 算法描述
+统计一个数字在排序数组中出现的次数。
+
+### 算法思路
+### 算法实现
+```
+public class Solution {
+    public int GetNumberOfK(int[] array , int k) {
+        if(array == null || array.length == 0) {
+            return 0;
+        }
+        int firstIdx = getFirstIdx(array, k);
+        int lastIdx = getLastIdx(array, k);
+        if (firstIdx > -1 && lastIdx > -1) {
+            return lastIdx - firstIdx + 1;
+        }
+        return 0;
+    }
+    private int getFirstIdx(int[] array, int num){
+        int lo = 0;
+        int hi = array.length - 1;
+        while (lo <= hi) { // <=
+            int mid = (lo + hi) >> 1;
+            if (array[mid] == num) {
+                if ((mid > 0 && array[mid -1] != num) || mid == 0) {
+                    return mid;
+                } else {
+                    hi = mid - 1; // 高
+                }
+            } else if (array[mid] < num) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return -1;
+    }
+    private int getLastIdx(int[] array, int num){
+        int lo = 0;
+        int hi = array.length -1;
+        while (lo <= hi) { // <=
+            int mid = (lo + hi) >> 1;
+            if (array[mid] == num) {
+                if ((mid < array.length - 1 && array[mid+1] != num )
+                   || mid == array.length - 1 ) {
+                    return mid;
+                } else {
+                    lo = mid + 1; // 高
+                }
+            } else if (array[mid] < num) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return -1;
+    }
+}
+```
 
 ## 循环链表入口
 ### 算法描述

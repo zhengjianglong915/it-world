@@ -10,9 +10,17 @@
    - 算法
      - [剑指offer-java实现](算法/剑指offer.md) 
      - [leetCode-java实现](算法/leetCode-java.md)
+   - linux
+        - [Linux高薪集训营](https://zhuanlan.zhihu.com/c_128843875)    
+        - [简易的linux kernel](https://zhuanlan.zhihu.com/c_177480196)
 - 语言
   - [Java知识地图](language/java.md) 
 - 中间件
   - [Dubbo知识地图](middleware/dubbo.md)
   - [Kafka知识地图](middleware/kafka.md)
+
+- 分布式
+    - redis
+        - [jedisPool实现原理及源码分析(1)----对象池的说明](https://www.cnblogs.com/plf112233/p/6527902.html)  
+        - [分布式锁](http://ifeve.com/redis-lock/)   
 
