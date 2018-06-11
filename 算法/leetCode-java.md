@@ -506,8 +506,52 @@ public class Solution {
 - [中文版地址](https://leetcode-cn.com/problems/generate-parentheses/description/)
 
 ### 22.1 算法描述
+给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。
+
+例如，给出 n = 3，生成结果为：
+
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+
 ### 22.2 算法思路
+采用递归方式, 不是先生成所有组合，而是用递归回溯的方法生成所有合法的组合。已知左括号先出现，且个数为0~n，因此先对左括号进行递归到底，条件为left < n（用left记录左括号数）。然后对右括号递归，条件为右括号数（用right记录）比左括号数少，即right < left。 
+递归出口为生成的串A长度增长到2n时。
+
+递归需要满足以下两个条件：
+
+- 可以插入 "）" 的前提是 "(" 的数量大于 "）"
+- 插入数量不超过n
+
 ### 22.3 算法实现
+
+```
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<String>();
+        backtrack(result, "", 0, 0, n);
+        return result;
+    }
+    
+    private void backtrack(List<String> result, String str, int openNum, int closeNum, int max) {
+        if (str.length() == max * 2) {
+            result.add(str);
+            return;
+        }
+        
+        if (openNum < max) 
+            backtrack(result, str + "(", openNum + 1, closeNum, max);
+        
+        // close个数必须要小于open，才能加") "
+        if (closeNum < openNum)
+            backtrack(result, str + ")", openNum, closeNum + 1, max);
+    }
+}
+```
 
 
 ## 28. 实现strStr()(Implement strStr())---字符串匹配
