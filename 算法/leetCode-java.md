@@ -553,6 +553,75 @@ class Solution {
 }
 ```
 
+## 23. 合并K个排序链表(Merge k Sorted Lists)
+- [英文版地址](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+- [中文版地址](https://leetcode-cn.com/problems/merge-k-sorted-lists/description/)
+
+### 23.1 算法描述
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+
+
+### 23.2 算法思路
+算法思路和K路归并排序类似。 首先定义一个最小堆，存放各个链表的头节点。 取出堆顶元素插入到新链表后面， 同时再从该堆顶元素对应的链表中获取一个新的值，插入堆里，重新调整堆。
+
+因为这个是一个链表，每个节点都存放了该链表的下一个元素。因此只要去next节点再插入到堆中就可以。
+
+java中的优先队列PriorityQueue底层采用堆实现，可以直接使用。
+
+
+拓展：
+
+- 如果对应的不是链表列表，而是数组，这个地方处理处理。 ---定义一个类，存放值、位置、对应的数组。
+
+### 23.3 算法实现
+
+```<java>
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) return null;
+        
+        // 升序排序，底层采用堆实现。 可以看做是最小堆。 指定堆大小和排序规则
+        PriorityQueue<ListNode> queue= new PriorityQueue<ListNode>(lists.length, new Comparator<ListNode>(){
+            @Override
+            public int compare(ListNode o1, ListNode o2){
+                return o1.val - o2.val;
+            }
+        });
+        
+        // 新链表
+        ListNode head = new ListNode(0);
+        ListNode tail= head;
+        
+        // 将每个链表的头节点加入堆中，构建最小堆
+        for (ListNode node:lists)
+            if (node!=null)
+                queue.add(node);
+            
+        // 依次从最小堆获取最小值，插入到新链表尾部。 然后将最小值所在链表的下一个节点加入到堆中，并调整对(内部自动调整)
+        while (!queue.isEmpty()){
+            // 插入到新链表尾部
+            tail.next = queue.poll();
+            tail = tail.next;
+            
+            // 将最小值所在链表的下一个节点加入到堆中，并调整对(内部自动调整)
+            if (tail.next!=null)
+                queue.add(tail.next);
+        }
+        return head.next;
+    }
+}
+```
+
+
+
 
 ## 28. 实现strStr()(Implement strStr())---字符串匹配
 - [英文版地址](https://leetcode.com/problems/implement-strstr/description/)
