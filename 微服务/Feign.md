@@ -6,6 +6,28 @@ https://www.jianshu.com/p/e6e55ee839f8
 https://blog.csdn.net/u014281502/article/details/72896182
 
 
-## feign GET请求的两种方式
+## feign GET请求的3种方式
+### 单个参数
+```
+public User getUser(@RequestParam("userId") Long userId);
+```
+
+### 多个参数
+
+```
+public Trans getTrans(@RequestParam("userId") Long userId, @RequestParam("userId") Long transId);
+```
+
+注意，一定要在RequestParam中写参数名字， 否则会报错：
+
+```
+Caused by: java.lang.IllegalStateException: Method has too many Body parameters:
+```
+
+### 多个参数使用map
+
+```
+public Trans getTrans(@RequestParam Map<String, Object> params);
+```
 
 
