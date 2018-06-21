@@ -21,10 +21,17 @@
   - [Dubbo知识地图](middleware/dubbo.md)
   - [Kafka知识地图](middleware/kafka.md)
 - [数据库](db/README)
+- redis
+   - [jedisPool实现原理及源码分析(1)----对象池的说明](https://www.cnblogs.com/plf112233/p/6527902.html)  
+   - [分布式锁](http://ifeve.com/redis-lock/) 
 
-- 分布式
-    - redis
-        - [jedisPool实现原理及源码分析(1)----对象池的说明](https://www.cnblogs.com/plf112233/p/6527902.html)  
-        - [分布式锁](http://ifeve.com/redis-lock/) 
+### 分布式
+
+- 一. 分布式理论
+  - [1.1 分布式概念](分布式/分布式概念.md) 
+  - [1.2 分布式系统的CAP理论](分布式/分布式系统的CAP理论.md) 
+
+
+
           
 
