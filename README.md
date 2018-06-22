@@ -33,11 +33,12 @@
    - [分布式锁](http://ifeve.com/redis-lock/) 
 
 ### MySql
-- 数据库理论
-- 使用
-- 技术内幕
-    - [Mysql体系结构和存储引擎](mysql/Mysql体系结构和存储引擎.md)
-- SQL优化
+- 一. 数据库理论
+- 二. 使用
+- 三. 技术内幕
+    - [3.1 Mysql体系结构和存储引擎](mysql/Mysql体系结构和存储引擎.md)
+    - [3.2 InnoDB存储引擎](mysql/InnoDB存储引擎.md)
+- 四. SQL优化
 
 《InnoDB》重点章节
 
