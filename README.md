@@ -36,6 +36,7 @@
 - java
   - IO/NIO
     - [Linux IO模式及 select、poll、epoll详解](https://segmentfault.com/a/1190000003063859)  
+
 ### MySql
 - 一. 数据库理论
 - 二. 使用
@@ -46,16 +47,9 @@
     - [3.4 MySQL 表结构](mysql/MySQL表结构.md)
     - [3.5 MySQL索引原理](mysql/MySQL索引原理.md)
     - [3.6 事务原理](mysql/事务原理.md)
+    - [3.5 备份和恢复](mysql/备份和恢复.md)
 - 四. SQL优化
 
-《InnoDB》重点章节
-
- - InnoDB关键特性
- - 日志文件
- - 第四章 表
- - 第五章 索引
- - 事务实现
- - 备份
 
 ### RPC框架
 - dubbo 
