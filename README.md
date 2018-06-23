@@ -49,7 +49,7 @@
     - [3.6 事务原理](mysql/事务原理.md)
     - [3.5 备份和恢复](mysql/备份和恢复.md)
 - 四. SQL优化
-
+    - [4.1 SQL优化](mysql/SQL优化.md)
 
 ### RPC框架
 - dubbo 
