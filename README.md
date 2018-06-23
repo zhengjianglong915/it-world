@@ -28,10 +28,7 @@
 - 中间件
   - [Dubbo知识地图](middleware/dubbo.md)
   - [Kafka知识地图](middleware/kafka.md)
-- redis
-   - [jedisPool实现原理及源码分析(1)----对象池的说明](https://www.cnblogs.com/plf112233/p/6527902.html)  
-   - [分布式锁](http://ifeve.com/redis-lock/) 
-
+    
 ### 语言
 - java
   - IO/NIO
@@ -58,10 +55,12 @@
 ### Redis
 - 入门使用
 - 原理
+    - [分布式锁实现原理](缓存/分布式锁实现原理.md)
+    - [分布式锁](http://ifeve.com/redis-lock/) 
 - 源码部分
+    - [jedisPool实现原理及源码分析(1)----对象池的说明](https://www.cnblogs.com/plf112233/p/6527902.html) 
 
 ### 分布式
-
 - 一. 分布式理论
   - [1.1 分布式概念](分布式/分布式概念.md) 
   - [1.2 分布式系统的CAP理论](分布式/分布式系统的CAP理论.md) 
