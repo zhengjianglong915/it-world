@@ -14,9 +14,11 @@
 - 基础
    - 计算机操作系统
      - [计算机操作系统--笔记](https://github.com/CyC2018/Interview-Notebook/blob/master/notes/计算机操作系统.md) 
-     - [计算机操作系统之IO管理](https://blog.csdn.net/shentanweilan9/article/details/54017502)  
+     - [计算机操作系统之IO管理](https://blog.csdn.net/shentanweilan9/article/details/54017502) 
+     - [操作系统之IO设置](base/操作系统之IO设备.md) 
    - 计算机网络
      - [计算机网络笔记](base/计算机网络.md) 
+     - [跟着动画学习TCP三次握手和四次挥手](https://mp.weixin.qq.com/s/pSrKbVryn71kDVIXUtpXMA)
    - 算法
      - [剑指offer-java实现](算法/剑指offer.md) 
      - [leetCode-java实现](算法/leetCode-java.md)
@@ -72,8 +74,15 @@
 ### 电子书
   - 《MySQL技术内幕 InnoDB存储引擎 第2版》 | [百度网盘](https://pan.baidu.com/s/1jJHlcX4) 密码 dtjf
   
+<<<<<<< Updated upstream
 ### 方法论
 - [毕业3年，为何技术能力相差越来越大？](https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&mid=2247487690&idx=1&sn=b56e94dda0466693b3cf5d8be1c0287c&chksm=e9292dc5de5ea4d3f191e1a66793bd5bfccbc477404ce5442a83e5568648dab7e715733bfbf8&scene=0&key=a2be23365d0c756bda858f72d018e0852c474b9b72d69bfbde66fc51b5e1fe58dfb61f597de9382f6e42b931259463e04fbdb0fb6345a120b7c0828fa36564514d4be7a639d16eabe391dff2284f350d&ascene=0&uin=MTE2NTA1NDQw&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G1510)&version=12020810&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=y1evDvO4IFqWbS9LGKEcn9Dm9ulMMgiKkzTYv6dj5W8%3D)
+=======
+  
+### 互联网业务理解
+- 广告
+    - [互联网广告模式](http://www.niaogebiji.com/article-15074-1.html)
+>>>>>>> Stashed changes
 
 
 
