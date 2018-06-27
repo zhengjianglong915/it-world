@@ -35,10 +35,6 @@
 - java
   - IO/NIO
     - [Linux IO模式及 select、poll、epoll详解](https://segmentfault.com/a/1190000003063859)  
-    - [java NIO](java/java-NIO.md)
-    - [java nio及操作系统底层原理](https://blog.csdn.net/u014507083/article/details/73784898)
-  - 并发
-    - [最佳实践：AtomicInteger实现边界值控制](https://blog.csdn.net/luohuacanyue/article/details/49018969)  
 
 ### MySql
 - 一. 数据库理论
@@ -74,16 +70,13 @@
 ### 电子书
   - 《MySQL技术内幕 InnoDB存储引擎 第2版》 | [百度网盘](https://pan.baidu.com/s/1jJHlcX4) 密码 dtjf
   
-<<<<<<< Updated upstream
-### 方法论
-- [毕业3年，为何技术能力相差越来越大？](https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&mid=2247487690&idx=1&sn=b56e94dda0466693b3cf5d8be1c0287c&chksm=e9292dc5de5ea4d3f191e1a66793bd5bfccbc477404ce5442a83e5568648dab7e715733bfbf8&scene=0&key=a2be23365d0c756bda858f72d018e0852c474b9b72d69bfbde66fc51b5e1fe58dfb61f597de9382f6e42b931259463e04fbdb0fb6345a120b7c0828fa36564514d4be7a639d16eabe391dff2284f350d&ascene=0&uin=MTE2NTA1NDQw&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G1510)&version=12020810&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=y1evDvO4IFqWbS9LGKEcn9Dm9ulMMgiKkzTYv6dj5W8%3D)
-=======
   
 ### 互联网业务理解
 - 广告
     - [互联网广告模式](http://www.niaogebiji.com/article-15074-1.html)
->>>>>>> Stashed changes
 
+### 方法论
+- [程序员在“金字塔”般的大背景下，如何做到比别人更具竞争力？](http://www.linkedkeeper.com/1159.html)
 
 
 
