@@ -1204,6 +1204,51 @@ class Solution {
 }
 ```
 
+## 67. 二进制求和(Add Binary)
+### 67.1 算法描述
+给定两个二进制字符串，返回他们的和（用二进制表示）。输入为非空字符串且只包含数字 1 和 0。
+
+示例 1:
+
+```
+输入: a = "11", b = "1"
+输出: "100"
+```
+
+示例 2:
+
+```
+输入: a = "1010", b = "1011"
+输出: "10101"
+```
+
+### 67.2 算法思路
+和10进制计算差不多，用一个变量来记录上一轮计算的进位数，从两个字符串末尾开始向前遍历进行就和。将和对2取余存入字符串中。
+
+- 这题和 两个链表求和思路一样，需要注意退出循环后需要对对进位数进行判断，如果有进位需要加到头部。
+- sb的append的是采用尾插入法，因此需要反转下。
+
+### 67.3 算法实现
+
+```
+class Solution {
+    public String addBinary(String a, String b) {
+        if (a == null || a.equals("")) return b;
+        if (b == null || b.equals("")) return a;
+        
+        StringBuilder sb = new StringBuilder();
+        int aIdx = a.length() - 1, bIdx = b.length() - 1, sum = 0;
+        while (aIdx >= 0 || bIdx >=0) {
+            if (aIdx >= 0) sum += a.charAt(aIdx--) - '0';
+            if (bIdx >= 0) sum += b.charAt(bIdx--) - '0';
+            sb.append(sum % 2);
+            sum = sum / 2;
+        }
+        if (sum > 0)  sb.append(sum);
+        return sb.reverse().toString();
+    }
+}
+```
 
 ## 70. 爬楼梯(Climbing Stairs)
 - [中文版地址](https://leetcode-cn.com/problems/climbing-stairs/description/)
