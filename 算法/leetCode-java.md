@@ -1250,6 +1250,41 @@ class Solution {
 }
 ```
 
+## 69. x 的平方根 Sqrt(x)
+- [中文版地址](https://leetcode.com/problems/sqrtx/description/)
+- [英文版地址](https://leetcode-cn.com/problems/sqrtx/description/)
+
+### 69.1 算法描述
+实现 int sqrt(int x) 函数。计算并返回 x 的平方根，其中 x 是非负整数。由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+
+### 69.2 算法思路
+采用二分法进行查找，找到最后一个平方值小于输入值的数字。
+
+### 69.3 算法实现
+
+```
+class Solution {
+    public int mySqrt(int x) {
+        if (x == 0 || x == 1)
+            return x;
+        
+        int left = 1, right = x / 2;
+        while (left < right) {
+            // 避免溢出
+            int mid = left + (right - left) / 2;
+            if (mid > x / mid) {
+                right = mid - 1;
+            } else {
+                if (mid + 1 > x / (mid + 1))
+                    return mid;
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
+```
+
 ## 70. 爬楼梯(Climbing Stairs)
 - [中文版地址](https://leetcode-cn.com/problems/climbing-stairs/description/)
 - [英文版地址](https://leetcode.com/problems/climbing-stairs/description/)
