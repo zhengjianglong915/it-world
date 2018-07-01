@@ -620,7 +620,123 @@ class Solution {
 }
 ```
 
+## 24. 两两交换链表中的节点 (Swap Nodes in Pairs)
+- [中文版地址](https://leetcode-cn.com/problems/swap-nodes-in-pairs/description/)
+- [英文版地址](https://leetcode.com/problems/swap-nodes-in-pairs/description/)
 
+### 24.1 算法描述
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+```
+给定 1->2->3->4, 你应该返回 2->1->4->3.
+```
+
+说明:
+
+ - 你的算法只能使用常数的额外空间。
+ - 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+### 24.2 算法思路
+#### 1) 递归算法---空间复杂度不满足要求，是logN
+采用递归算法：
+
+- 保存head 的下一个节点
+- 对链表的的后面的内容做交互操作
+- 交互节点内容
+
+#### 2）while循环遍历方式
+1. 增加一个新的头节点，使得对第一个节点的处理和后面节点的处理保持一致
+2. 用三个节点指针来操作，一个前驱pre, 当前节点 head和后续节点sec
+
+### 24.3 算法实现
+#### 1. 递归
+```<java>
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+   public ListNode swapPairs(ListNode head) {
+        if ((head == null)||(head.next == null))
+            return head;
+        ListNode n = head.next;
+        head.next = swapPairs(head.next.next);
+        n.next = head;
+        return n;
+    }
+}
+```
+
+#### while循环
+
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null) return head;
+        // 增加一个head，来保证对第一个节点的处理一致
+        ListNode newHead = new ListNode(0);
+        newHead.next = head;
+        // 前驱节点
+        ListNode pre = newHead;
+        while (head != null && head.next != null) {
+            // 第二个节点
+            ListNode sec = head.next;
+            // 先保存后面的内容，建立关系
+            head.next = sec.next;
+            sec.next = head;
+            // 前驱指向 sec
+            pre.next = sec;
+            // 新的前驱节点
+            pre = head;
+            // 后面要处理的节点
+            head = head.next;
+        }
+        return newHead.next;
+    }
+}
+```
+
+## 27. 移除元素(Remove Element)
+- [英文版地址](https://leetcode.com/problems/remove-element/description/)
+- [中文版地址](https://leetcode-cn.com/problems/remove-element/description/)
+
+### 27.1 算法描述
+给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+### 27.2 算法思路
+定义两个指针，一个记录当前遍历的位置，一个记录当前插入的位置。
+
+- 如果当前遍历的值和指定值一样，则移动到下一个遍历位置
+- 如果不相同则将遍历位置的值插入到插入位置，遍历和插入位置都向后移动
+
+### 27.3 算法实现
+```
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        if (nums == null || nums.length == 0) return 0;
+        int idx = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] ==  val) continue;
+            else {
+                nums[idx++] = nums[i];
+            }
+        }
+        return idx;
+    }
+}
+```
 
 
 ## 28. 实现strStr()(Implement strStr())---字符串匹配
