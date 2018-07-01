@@ -823,6 +823,52 @@ class Solution {
 }
 ```
 
+## 46. 全排列(Permutations)
+### 46.1 算法描述
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+
+### 46.2 算法思路
+采用递归算法
+
+### 46.3 算法实现
+
+```
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (nums == null || nums.length == 0) 
+            return result;
+        
+        permute(nums, 0, result);
+        return result;
+    }
+     
+    public void permute(int[] nums, int idx, List<List<Integer>> result) {
+        if (idx >= nums.length) {  // 边界条件
+            List<Integer> list = new ArrayList<Integer>();
+            for (int val : nums) {
+                list.add(val);
+            }
+            result.add(list);
+        }
+        
+        for (int i = idx; i < nums.length; i ++) {
+            swap(nums, idx, i);
+            permute(nums, idx + 1, result);
+            swap(nums, idx, i);
+        }
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+
+
+
 ## 50. Pow(x, n)
 - [中文版本地址](https://leetcode-cn.com/problems/powx-n/description/)
 - [英文版本地址](https://leetcode.com/problems/powx-n/description/)
