@@ -868,6 +868,92 @@ class Solution {
 ```
 
 ## 49. 字母异位词分组 (Group Anagrams)
+- [中文版本地址](https://leetcode-cn.com/problems/group-anagrams/description/)
+- [英文版本地址](https://leetcode.com/problems/group-anagrams/description/)
+
+### 49.1 算法描述
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+
+示例:
+
+```
+输入: ["eat", "tea", "tan", "ate", "nat", "bat"],
+输出:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+```
+
+说明：
+
+- 所有输入均为小写字母。
+- 不考虑答案输出的顺序。
+
+### 49.2 算法思路
+#### 方法一: 对字符串进行排序
+用map保存排序后的字符串和对应集合的映射。
+
+- 对每个字符串进行排序，看map中是否存在该key。如果存在则直接设置进去，如果没有则创建一个
+
+时间复杂度 NKlogK
+
+#### 方法二: 通过计数方式分类
+构建一个26位的词向量，记录每个词出现的次数。有点类似NLP的词向量思路。 例如 abbccc 可以写成 (1, 2, 3, 0, 0, ..., 0)
+
+用map来保存 词向量和集合的映射，如：
+
+![](../images/15304392008808.jpg)
+
+
+
+### 49.3 算法实现
+#### 方法一实现
+```<java>
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs.length == 0) return new ArrayList();
+        Map<String, List> ans = new HashMap<String, List>();
+        for (String s : strs) {
+            char[] ca = s.toCharArray();
+            Arrays.sort(ca);
+            String key = String.valueOf(ca);
+            if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+            ans.get(key).add(s);
+        }
+        return new ArrayList(ans.values());
+    }
+}
+```
+
+#### 方法二实现
+```<java>
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs.length == 0) return new ArrayList();
+        Map<String, List> ans = new HashMap<String, List>();
+        int[] count = new int[26];
+        for (String s : strs) {
+            // 将数组内容进行重置
+            Arrays.fill(count, 0);
+            // 设置词向量
+            for (char c : s.toCharArray()) count[c - 'a'] ++;
+            // 构建向量key
+            StringBuilder sb = new StringBuilder("");
+            for (int i = 0; i < 26; i++) {
+                sb.append('#');
+                sb.append(count[i]);
+            }
+            String key = sb.toString();
+            if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+            ans.get(key).add(s);
+        }
+        return new ArrayList(ans.values());
+    }
+}
+```
+
 
 
 ## 50. Pow(x, n)
