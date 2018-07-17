@@ -10,5 +10,8 @@
 - [Kafka源码解析(6)--控制器的实现原理](http://zhengjianglong.cn/2018/04/22/kafka/kafka源码解析(6)--控制器实现原理/)
 - [Kafka源码解析(7)--存储器的实现原理](http://zhengjianglong.cn/2018/04/22/kafka/kafka源码解析(7)--存储器的实现原理/)
 
+## 入门
+- [C++ demo 官网](https://github.com/edenhill/librdkafka/blob/master/examples/rdkafka_example.cpp)
+
 
 
