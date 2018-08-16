@@ -24,8 +24,15 @@
 6.  RpcInternalContext.getContext().setFuture(future); 方式解决不了同一个线程中进行多个异步调用的处理逻辑
 7. 这里是否有bug  删除的配置没法体现
 ![](../images/15337222927065.jpg)
-8. tracer rpc 方式无法上传到 zkipkin 中
-
+8. tracer rpc 方式无法上传到 zkipkin 中, 因为默认不开启，需要开启上传
+9. 梳理各个过滤器的作用， 顺序等
+10. 数据所有的事件和事件触发的代码位置
+11. ConsumerAttributeListener 是给配置中心准备的？
+12. com.alipay.sofa.rpc.registry.address 如何被读取？
+13. subscribeConfig 主要是做什么的？
+14. 包的版本如何管理
+15. 注册中心隔离问题，避免本地连接到开发环境。
+16. 
 
 
 ## 代码问题
